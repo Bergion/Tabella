@@ -1,4 +1,5 @@
 using Cabinet.API.Infrastructure;
+using Cabinet.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace Cabinet.API
 		{
 			services.AddDbContext<CabinetContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection")));
+
+			services.AddFileStorage();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
