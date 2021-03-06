@@ -11,13 +11,7 @@ namespace Cabinet.Storage
 
 		public DefaultStorage(StorageOptions options)
 		{
-			if (!options.IsValid)
-			{
-				throw new ArgumentException("");
-			}
-
 			_options = options;
-
 		}
 
 		public string DownloadObjectAsync()
@@ -27,7 +21,7 @@ namespace Cabinet.Storage
 
 		public async Task<bool> UploadObjectAsync(string name, byte[] file)
 		{
-			var path = Path.Combine(_options.Destination, name);
+			var path = Path.Combine(_options.Source, name);
 			try
 			{
 				await File.WriteAllBytesAsync(path, file);

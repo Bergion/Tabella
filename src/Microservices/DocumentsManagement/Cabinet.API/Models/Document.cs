@@ -14,6 +14,7 @@ namespace Cabinet.API.Models
 		public int DocumentTypeID { get; set; }
 
 		public DocumentType DocumentType { get; set; }
+
 		public IEnumerable<Original> Originals { get; set; }
 	}
 }

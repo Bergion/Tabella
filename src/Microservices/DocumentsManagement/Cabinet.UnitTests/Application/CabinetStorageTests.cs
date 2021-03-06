@@ -10,16 +10,15 @@ namespace Cabinet.UnitTests
 	public class CabinetStorageTests
 	{
 		private IStorage _storage;
-		private string _testDirectory;
+		private const string _testDirectory = "/Cabinet storage test";
 
 		[SetUp]
 		public void Setup()
 		{
-			_testDirectory = "/Cabinet storage test";
 			Directory.CreateDirectory(_testDirectory);
 			var options = new StorageOptions()
 			{
-				Destination = _testDirectory
+				Source = _testDirectory
 			};
 			_storage = new DefaultStorage(options);
 		}

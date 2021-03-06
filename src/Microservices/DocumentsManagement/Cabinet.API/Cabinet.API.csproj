@@ -18,11 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Cabinet.Storage\Cabinet.Storage.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cabinet.Storage\Cabinet.Storage.csproj" />
+    <Folder Include="Infrastructure\Extensions\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

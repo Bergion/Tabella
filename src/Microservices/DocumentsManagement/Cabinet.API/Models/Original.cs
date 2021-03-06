@@ -7,12 +7,27 @@ namespace Cabinet.API.Models
 {
 	public class Original
 	{
-		public int ID { get; set; }
+		public Guid ID { get; set; }
 
 		/// <summary>
 		/// File hash
 		/// </summary>
 		public string Hash { get; set; }
+
+		/// <summary>
+		/// Size in bytes
+		/// </summary>
+		public int Size { get; set; }
+
+		/// <summary>
+		/// File extension
+		/// </summary>
+		public string Extension { get; set; }
+
+		/// <summary>
+		/// Flag is main documents' file
+		/// </summary>
+		public bool IsMain { get; set; }
 
 		public DateTime UploadDate { get; set; }
 
