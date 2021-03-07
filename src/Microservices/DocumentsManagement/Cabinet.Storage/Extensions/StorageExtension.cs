@@ -1,6 +1,7 @@
 ﻿using Cabinet.Storage.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Cabinet.Storage;
 
 namespace Cabinet.Storage
 {
@@ -16,7 +17,14 @@ namespace Cabinet.Storage
 			}
 			
 			services.AddSingleton(options);
-			services.AddTransient<IStorage, DefaultStorage>();
+			switch (options.Provider)
+			{
+				case StorageProvider.InMemory:
+					services.AddTransient<IStorage, DefaultStorage>();
+					break;
+				default:
+					throw new NotImplementedException();
+			}
 		}
 	}
 }

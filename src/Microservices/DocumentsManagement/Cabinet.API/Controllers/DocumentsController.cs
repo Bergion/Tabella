@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/document")]
 	[ApiController]
 	public class DocumentsController : ControllerBase
 	{
@@ -22,8 +22,7 @@ namespace Cabinet.API.Controllers
 			_storage = storage;
 		}
 
-		// POST api/[controller]/upload
-		[Route("upload")]
+		// POST api/document
 		[HttpPost]
 		[ProducesResponseType((int)HttpStatusCode.Created)]
 		[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
