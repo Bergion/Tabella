@@ -8,7 +8,9 @@ namespace Cabinet.Storage.Abstractions
 {
 	public interface IStorage
 	{
-		Task<bool> UploadObjectAsync(string name, byte[] file);
+		string Source { get; }
+
+		Task<string> UploadObjectAsync(string name, byte[] file);
 
 		string DownloadObjectAsync();
 	}

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.InputModels
 {
-	public class DocumentInputModel
+	public class OriginalInputModel
 	{
-		public int DocumentTypeId { get; set; }
-
-		public IEnumerable<IFormFile> Files { get; set; }
+		public IFormFile File { get; set; }
 	}
 }

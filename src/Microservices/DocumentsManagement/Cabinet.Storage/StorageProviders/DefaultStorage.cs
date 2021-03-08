@@ -12,27 +12,27 @@ namespace Cabinet.Storage
 		public DefaultStorage(StorageOptions options)
 		{
 			_options = options;
+			Source = _options.Source;
 		}
+
+		public string Source { get; }
 
 		public string DownloadObjectAsync()
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<bool> UploadObjectAsync(string name, byte[] file)
+		public async Task<string> UploadObjectAsync(string path, byte[] file)
 		{
-			var path = Path.Combine(_options.Source, name);
-			try
+			if (string.IsNullOrWhiteSpace(path))
 			{
-				await File.WriteAllBytesAsync(path, file);
+				throw new ArgumentNullException(nameof(path));
 			}
-			catch (Exception)
-			{
-				// log
-				return false;
-			}
-
-			return true;
+			string fullPath = Path.Combine(_options.Source, path);
+			Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+			await File.WriteAllBytesAsync(fullPath, file);
+			
+			return path;
 		}
 	}
 }

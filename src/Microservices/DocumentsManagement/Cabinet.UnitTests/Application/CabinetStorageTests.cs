@@ -3,50 +3,74 @@ using Cabinet;
 using Cabinet.Storage.Abstractions;
 using Cabinet.Storage;
 using System.IO;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Cabinet.UnitTests
 {
 	[TestFixture]
 	public class CabinetStorageTests
 	{
-		private IStorage _storage;
 		private const string _testDirectory = "/Cabinet storage test";
+		private StorageOptions _options;
 
 		[SetUp]
 		public void Setup()
 		{
 			Directory.CreateDirectory(_testDirectory);
-			var options = new StorageOptions()
+			_options = new StorageOptions()
 			{
 				Source = _testDirectory
 			};
-			_storage = new DefaultStorage(options);
 		}
 
 		[Test]
-		public void Save_file_to_storage_success()
+		public void UploadObjectAsync_Success()
 		{
 			var fakeFileName = "textfile.txt";
 			var fakeFile = getFakeFile();
+			var storage = new DefaultStorage(_options);
+			string path = storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
 
-			bool result = _storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
-
-			Assert.IsTrue(result);
+			Assert.IsTrue(!string.IsNullOrWhiteSpace(path));
+			Assert.IsTrue(File.Exists(Path.Combine(_testDirectory, path)));
 		}
 
 		[Test]
-		public void Save_file_to_storage_duplicate_name_success()	
+		public void UploadObjectAsync_DuplicateName_Success()	
 		{
 			var fakeFileName = "textfile.txt";
 			var fakeFile = getFakeFile();
+			var storage = new DefaultStorage(_options);
 
-			bool result1 = _storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
-			bool result2 = _storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
+			string path1 = storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
+			string path2 = storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
 
-			Assert.IsTrue(result1);
-			Assert.IsTrue(result2);
+			Assert.IsTrue(!string.IsNullOrWhiteSpace(path1));
+			Assert.IsTrue(File.Exists(Path.Combine(_testDirectory, path1)));
+
+			Assert.IsTrue(!string.IsNullOrWhiteSpace(path2));
+			Assert.IsTrue(File.Exists(Path.Combine(_testDirectory, path2)));
 		}
 
+		[Test]
+		public async Task UploadObjectAsync_EmptyFileName_Exception()
+		{
+			var fakeFile = getFakeFile();
+			var storage = new DefaultStorage(_options);
+
+			Assert.ThrowsAsync<ArgumentNullException>(() => storage.UploadObjectAsync("", fakeFile));
+		}
+
+		[Test]
+		public async Task UploadObjectAsync_NullBytes_Exception()
+		{
+			var fakeFileName = "textfile.txt";
+			var storage = new DefaultStorage(_options);
+
+			Assert.ThrowsAsync<ArgumentNullException>(() => storage.UploadObjectAsync(fakeFileName, null));
+		}
 
 		[TearDown]
 		public void CleanUp()

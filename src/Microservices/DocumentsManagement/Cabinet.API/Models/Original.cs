@@ -7,7 +7,16 @@ namespace Cabinet.API.Models
 {
 	public class Original
 	{
+		/// <summary>
+		/// Original identifier
+		/// also used as unique file name
+		/// </summary>
 		public Guid ID { get; set; }
+
+		/// <summary>
+		/// Original file name
+		/// </summary>
+		public string FileName { get; set; }
 
 		/// <summary>
 		/// File hash
@@ -29,7 +38,18 @@ namespace Cabinet.API.Models
 		/// </summary>
 		public bool IsMain { get; set; }
 
-		public DateTime UploadDate { get; set; }
+		/// <summary>
+		/// File storage identifier 
+		/// bucket name, server path, etc.
+		/// </summary>
+		public string StorageSource { get; set; }
+
+		public string StoragePath { get; set; }
+
+		/// <summary>
+		/// Upload date
+		/// </summary>
+		public DateTime UploadDate { get; set; } = DateTime.Now;
 
 		public Guid DocumentID { get; set; }
 
