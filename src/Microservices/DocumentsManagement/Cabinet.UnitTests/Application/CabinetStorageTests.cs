@@ -55,7 +55,7 @@ namespace Cabinet.UnitTests
 		}
 
 		[Test]
-		public async Task UploadObjectAsync_EmptyFileName_Exception()
+		public void UploadObjectAsync_EmptyFileName_Exception()
 		{
 			var fakeFile = getFakeFile();
 			var storage = new DefaultStorage(_options);
@@ -64,7 +64,7 @@ namespace Cabinet.UnitTests
 		}
 
 		[Test]
-		public async Task UploadObjectAsync_NullBytes_Exception()
+		public void UploadObjectAsync_NullBytes_Exception()
 		{
 			var fakeFileName = "textfile.txt";
 			var storage = new DefaultStorage(_options);

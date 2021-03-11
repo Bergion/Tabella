@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Infrastructure.EntityConfigurations
 {
-	public class OriginalEntityTypeConfiguration
-		: IEntityTypeConfiguration<Original>
+	public class OriginalDescriptionEntityTypeConfiguration
+		: IEntityTypeConfiguration<OriginalDescription>
 	{
-		public void Configure(EntityTypeBuilder<Original> builder)
+		public void Configure(EntityTypeBuilder<OriginalDescription> builder)
 		{
 			builder.ToTable("Original");
 		}

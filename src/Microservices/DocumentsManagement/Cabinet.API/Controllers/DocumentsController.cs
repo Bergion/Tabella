@@ -28,7 +28,7 @@ namespace Cabinet.API.Controllers
 		[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
 		[ProducesResponseType((int)HttpStatusCode.Forbidden)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-		public Task<IActionResult> CreateDocumentAsync([FromForm] DocumentInputModel documents)
+		public Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documents)
 		{
 			return null;
 		}

@@ -16,13 +16,13 @@ namespace Cabinet.API.Infrastructure
 		}
 		public DbSet<Document> Documents { get; set; }
 		public DbSet<DocumentType> DocumentTypes { get; set; }
-		public DbSet<Original> Originals { get; set; }
+		public DbSet<OriginalDescription> OriginalsDescriptions { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.ApplyConfiguration(new DocumentEntityTypeConfiguration());
 			builder.ApplyConfiguration(new DocumentTypeEntityTypeConfiguration());
-			builder.ApplyConfiguration(new OriginalEntityTypeConfiguration());
+			builder.ApplyConfiguration(new OriginalDescriptionEntityTypeConfiguration());
 		}
 	}
 }

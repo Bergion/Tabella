@@ -22,6 +22,12 @@ namespace Cabinet.Storage
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Upload object (file) to storage
+		/// </summary>
+		/// <param name="path">Path on storage</param>
+		/// <param name="file">File</param>
+		/// <returns></returns>
 		public async Task<string> UploadObjectAsync(string path, byte[] file)
 		{
 			if (string.IsNullOrWhiteSpace(path))

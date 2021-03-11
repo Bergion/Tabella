@@ -1,5 +1,4 @@
 ﻿using Cabinet.API.Infrastructure;
-using Cabinet.API.InputModels;
 using Cabinet.API.Managers;
 using Cabinet.API.Models;
 using Cabinet.Storage;
@@ -35,11 +34,11 @@ namespace Cabinet.UnitTests.Application
 		}
 
 		[Test]
-		public async Task AddOriginal_Success()
+		public async Task AddOriginalAsync_Success()
 		{
 			var cabinetContext = new CabinetContext(_dbOptions);
 			var fakeDocument = getFakeDocument();
-			var fakeOriginal = getFakeOriginal();
+			var fakeOriginal = getFakeFile();
 
 			var documentManager = new DocumentManager(cabinetContext, _storage);
 			var original = await documentManager.AddOriginalAsync(fakeDocument, fakeOriginal);
@@ -47,6 +46,18 @@ namespace Cabinet.UnitTests.Application
 			Assert.IsNotNull(original);
 			Assert.AreEqual(fakeDocument.ID, original.DocumentID);
 			Assert.IsTrue(File.Exists(Path.Combine(_testDirectory, original.StoragePath)));
+		}
+
+		[Test]
+		public void AddOriginalAsync_ThrowsArgumentNullException()
+		{
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var fakeDocument = getFakeDocument();
+			var fakeOriginal = getFakeFile();
+
+			var documentManager = new DocumentManager(cabinetContext, _storage);
+			Assert.ThrowsAsync<ArgumentNullException>(() => documentManager.AddOriginalAsync(fakeDocument, null));
+			Assert.ThrowsAsync<ArgumentNullException>(() => documentManager.AddOriginalAsync(null, fakeOriginal));
 		}
 
 		[TearDown]
@@ -74,18 +85,15 @@ namespace Cabinet.UnitTests.Application
 			};
 		}
 
-		private OriginalInputModel getFakeOriginal()
+		private IFormFile getFakeFile()
 		{
 			var fileName = "test.pdf";
 			var name = "testFile";
-			var stream = new MemoryStream(getFakeFile());
-			return new OriginalInputModel()
-			{
-				File = new FormFile(stream, 0, stream.Length, name, fileName)
-			};
+			var stream = new MemoryStream(getFakeFileBytes());
+			return new FormFile(stream, 0, stream.Length, name, fileName);
 		}
 
-		private byte[] getFakeFile()
+		private byte[] getFakeFileBytes()
 		{
 			return new byte[] { 37, 80, 68, 70, 45, 207, 206, 201 };
 		}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.InputModels
 {
-	public class DocumentsInputModel
+	public class DocumentInputModel
 	{
 		/// <summary>
 		/// Organization creator
@@ -17,7 +17,15 @@ namespace Cabinet.API.InputModels
 		/// Document type identifier 
 		/// </summary>
 		public int DocumentTypeID { get; set; }
+	}
 
-		public IEnumerable<IFormFile> Files { get; set; }
+	public class DocumentWithFileInputModel : DocumentInputModel
+	{
+		public IFormFile File { get; set; }
+	}
+
+	public class AggregatedDocumentInputModel : DocumentInputModel
+	{
+		public IEnumerable<IFormFile> File { get; set; }
 	}
 }

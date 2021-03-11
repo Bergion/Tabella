@@ -1,4 +1,5 @@
 using Cabinet.API.Infrastructure;
+using Cabinet.API.Managers;
 using Cabinet.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace Cabinet.API
 				options.Configure(Configuration.GetSection("DevelopmentStorage").Get<StorageConfiguration>());
 			});
 
+			services.AddTransient<DocumentManager>();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

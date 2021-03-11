@@ -10,7 +10,7 @@ namespace Cabinet.API.Services
 {
 	public interface IDocumentCreator
 	{
-		IEnumerable<IResult<Document>> CreateDocuments(DocumentsInputModel documentModel);
+		Task<IEnumerable<IResult<Document>>> CreateDocuments(IEnumerable<DocumentWithFileInputModel> documentModel);
 	}
 
 	

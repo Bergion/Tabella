@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Models
 {
-	public class Original
+	public class OriginalDescription
 	{
 		/// <summary>
 		/// Original identifier
