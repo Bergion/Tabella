@@ -1,4 +1,5 @@
 ﻿using Cabinet.API.Infrastructure;
+using Cabinet.API.InputModels;
 using Cabinet.API.Managers;
 using Cabinet.API.Models;
 using Cabinet.Storage;
@@ -38,7 +39,7 @@ namespace Cabinet.UnitTests.Application
 		{
 			var cabinetContext = new CabinetContext(_dbOptions);
 			var fakeDocument = getFakeDocument();
-			var fakeOriginal = getFakeFile();
+			var fakeOriginal = getFakeOriginal();
 
 			var documentManager = new DocumentManager(cabinetContext, _storage);
 			var original = await documentManager.AddOriginalAsync(fakeDocument, fakeOriginal);
@@ -53,7 +54,7 @@ namespace Cabinet.UnitTests.Application
 		{
 			var cabinetContext = new CabinetContext(_dbOptions);
 			var fakeDocument = getFakeDocument();
-			var fakeOriginal = getFakeFile();
+			var fakeOriginal = getFakeOriginal();
 
 			var documentManager = new DocumentManager(cabinetContext, _storage);
 			Assert.ThrowsAsync<ArgumentNullException>(() => documentManager.AddOriginalAsync(fakeDocument, null));
@@ -85,9 +86,18 @@ namespace Cabinet.UnitTests.Application
 			};
 		}
 
+		private Original getFakeOriginal()
+		{
+			return new Original
+			{
+				File = getFakeFile(),
+				ForSign = true
+			};
+		}
+
 		private IFormFile getFakeFile()
 		{
-			var fileName = "test.pdf";
+			var fileName = Guid.NewGuid().ToString() + ".pdf";
 			var name = "testFile";
 			var stream = new MemoryStream(getFakeFileBytes());
 			return new FormFile(stream, 0, stream.Length, name, fileName);

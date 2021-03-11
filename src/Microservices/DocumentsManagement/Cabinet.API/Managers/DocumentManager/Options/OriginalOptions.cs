@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Cabinet.API.Managers.Options
+﻿namespace Cabinet.API.Managers.Options
 {
 	/// <summary>
 	/// Specifies options for file requirements

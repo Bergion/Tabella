@@ -34,9 +34,9 @@ namespace Cabinet.API.Models
 		public string Extension { get; set; }
 
 		/// <summary>
-		/// Flag is main documents' file
+		/// Flag indicates whether sign document or not
 		/// </summary>
-		public bool IsMain { get; set; }
+		public bool ForSign { get; set; }
 
 		/// <summary>
 		/// File storage identifier 

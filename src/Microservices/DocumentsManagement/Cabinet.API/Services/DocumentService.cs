@@ -32,7 +32,11 @@ namespace Cabinet.API.Services
 				try
 				{
 					await _documentManager.CreateAsync(document);
-					await _documentManager.AddOriginalAsync(document, documentModel.File);
+					await _documentManager.AddOriginalAsync(document, new Original
+					{
+						File = documentModel.File,
+						ForSign = true
+					});
 				}
 				catch (CabinetDomainException e)
 				{

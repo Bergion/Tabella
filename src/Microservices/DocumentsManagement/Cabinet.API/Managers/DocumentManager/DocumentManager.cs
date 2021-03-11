@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Cabinet.API.InputModels;
 
 namespace Cabinet.API.Managers
 {
@@ -57,9 +58,9 @@ namespace Cabinet.API.Managers
 		/// Add original to document
 		/// </summary>
 		/// <param name="document">Document object</param>
-		/// <param name="file">Uploadable original</param>
+		/// <param name="original">Uploadable original</param>
 		/// <returns></returns>
-		public async Task<OriginalDescription> AddOriginalAsync(Document document, IFormFile original)
+		public async Task<OriginalDescription> AddOriginalAsync(Document document, Original original)
 		{
 			if (document is null)
 			{
@@ -70,16 +71,16 @@ namespace Cabinet.API.Managers
 			byte[] bytes;
 			using (var ms = new MemoryStream())
 			{
-				await original.CopyToAsync(ms);
+				await original.File.CopyToAsync(ms);
 				bytes = ms.ToArray();
 			}
 
 			var id = Guid.NewGuid();
-			var extension = Path.GetExtension(original.FileName);
+			var extension = Path.GetExtension(original.File.FileName);
 			var path = Path.Combine(document.ID.ToString(), id.ToString()) + extension;
 			await _storage.UploadObjectAsync(path, bytes);
 
-			var originalFileName = Path.GetFileNameWithoutExtension(original.FileName);
+			var originalFileName = Path.GetFileNameWithoutExtension(original.File.FileName);
 			var originalDescription = new OriginalDescription
 			{
 				ID = id,
@@ -87,6 +88,7 @@ namespace Cabinet.API.Managers
 				Extension = extension,
 				StorageSource = _storage.Source,
 				StoragePath = path,
+				ForSign = original.ForSign,
 				DocumentID = document.ID
 			};
 
@@ -108,11 +110,11 @@ namespace Cabinet.API.Managers
 		{
 		}
 
-		public async Task ValidateOriginalAsync(IFormFile file)
+		public async Task ValidateOriginalAsync(Original file)
 		{
 		}
 
-		public async Task ValidateOriginalDescriptionAsync(IFormFile file)
+		public async Task ValidateOriginalDescriptionAsync(OriginalDescription originalDescription)
 		{
 		}
 	}
