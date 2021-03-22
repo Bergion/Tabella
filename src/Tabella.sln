@@ -19,10 +19,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.Storage", "Microservices\Cabinet\Cabinet.Storage\Cabinet.Storage.csproj", "{C17DDB6D-2927-40D1-9DB7-41AD1559F957}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.IntegrationTests", "Microservices\Cabinet\Tests\Cabinet.IntegrationTests\Cabinet.IntegrationTests.csproj", "{05353C67-9333-41C5-B9A3-C14F5F6B4E2B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D843ED51-7A40-48EB-8079-A003CC72065F} = {D843ED51-7A40-48EB-8079-A003CC72065F}
+		{C17DDB6D-2927-40D1-9DB7-41AD1559F957} = {C17DDB6D-2927-40D1-9DB7-41AD1559F957}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{72720792-DE65-43DD-A524-64A8EF746CCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cabinet.UnitTests", "Microservices\Cabinet\Tests\Cabinet.UnitTests\Cabinet.UnitTests.csproj", "{03D367FE-3ACF-42C2-8175-1591A70E4506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.UnitTests", "Microservices\Cabinet\Tests\Cabinet.UnitTests\Cabinet.UnitTests.csproj", "{03D367FE-3ACF-42C2-8175-1591A70E4506}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
