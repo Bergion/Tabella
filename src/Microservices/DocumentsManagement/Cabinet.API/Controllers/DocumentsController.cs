@@ -1,5 +1,6 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
+using Cabinet.API.Services.Abstractions;
 using Cabinet.Storage.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,22 +16,42 @@ namespace Cabinet.API.Controllers
 	[ApiController]
 	public class DocumentsController : ControllerBase
 	{
-		private readonly IStorage _storage;
+		private readonly IDocumentService _documentService;
 
-		public DocumentsController(IStorage storage)
+		public DocumentsController(IDocumentService documentService)
 		{
-			_storage = storage;
+			_documentService = documentService;
 		}
 
 		// POST api/document
 		[HttpPost]
-		[ProducesResponseType((int)HttpStatusCode.Created)]
+		[ProducesResponseType((int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-		[ProducesResponseType((int)HttpStatusCode.Forbidden)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-		public Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documents)
+		public async Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documentsInputModel)
 		{
-			return null;
+			if (!ModelState.IsValid || documentsInputModel.Files is null)
+			{
+				return BadRequest("Invalid parameters");
+			}
+
+			var documents = documentsInputModel.Files.Select(f => new DocumentWithFileInputModel
+			{
+				File = f,
+				OrganizationID = documentsInputModel.OrganizationID,
+				DocumentTypeID = documentsInputModel.DocumentTypeID,
+			});
+			IEnumerable<IResult<Document>> result;
+			try
+			{
+				result = await _documentService.CreateDocumentsAsync(documents);
+			}
+			catch (Exception e)
+			{
+				return BadRequest("Unable to create document");
+			}
+
+			return Ok(result);
 		}
 	}
 }

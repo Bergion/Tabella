@@ -38,8 +38,8 @@ namespace Cabinet.UnitTests.Application
 		public async Task AddOriginalAsync_Success()
 		{
 			var cabinetContext = new CabinetContext(_dbOptions);
-			var fakeDocument = getFakeDocument();
-			var fakeOriginal = getFakeOriginal();
+			var fakeDocument = TestHelper.GetFakeDocument();
+			var fakeOriginal = TestHelper.GetFakeOriginal();
 
 			var documentManager = new DocumentManager(cabinetContext, _storage);
 			var original = await documentManager.AddOriginalAsync(fakeDocument, fakeOriginal);
@@ -53,8 +53,8 @@ namespace Cabinet.UnitTests.Application
 		public void AddOriginalAsync_ThrowsArgumentNullException()
 		{
 			var cabinetContext = new CabinetContext(_dbOptions);
-			var fakeDocument = getFakeDocument();
-			var fakeOriginal = getFakeOriginal();
+			var fakeDocument = TestHelper.GetFakeDocument();
+			var fakeOriginal = TestHelper.GetFakeOriginal();
 
 			var documentManager = new DocumentManager(cabinetContext, _storage);
 			Assert.ThrowsAsync<ArgumentNullException>(() => documentManager.AddOriginalAsync(fakeDocument, null));
@@ -76,36 +76,6 @@ namespace Cabinet.UnitTests.Application
 				Directory.Delete(dir);
 			}
 			Directory.Delete(_testDirectory);
-		}
-
-		private Document getFakeDocument()
-		{
-			return new Document
-			{
-				ID = Guid.NewGuid()
-			};
-		}
-
-		private Original getFakeOriginal()
-		{
-			return new Original
-			{
-				File = getFakeFile(),
-				ForSign = true
-			};
-		}
-
-		private IFormFile getFakeFile()
-		{
-			var fileName = Guid.NewGuid().ToString() + ".pdf";
-			var name = "testFile";
-			var stream = new MemoryStream(getFakeFileBytes());
-			return new FormFile(stream, 0, stream.Length, name, fileName);
-		}
-
-		private byte[] getFakeFileBytes()
-		{
-			return new byte[] { 37, 80, 68, 70, 45, 207, 206, 201 };
 		}
 	}
 }

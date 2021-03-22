@@ -29,7 +29,7 @@ namespace Cabinet.API.Managers
 		/// <value>
 		/// True if changes should be automatically persisted, otherwise false.
 		/// </value>
-		protected bool AutoSaveChanges { get; set; } = true;
+		public bool AutoSaveChanges { get; set; } = true;
 
 		/// <summary>
 		/// Persist changes
@@ -63,6 +63,11 @@ namespace Cabinet.API.Managers
 		public async Task<OriginalDescription> AddOriginalAsync(Document document, Original original)
 		{
 			if (document is null)
+			{
+				throw new ArgumentNullException(nameof(document));
+			}
+
+			if (original is null)
 			{
 				throw new ArgumentNullException(nameof(document));
 			}

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Cabinet.API.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,6 @@ namespace Cabinet.API.InputModels
 
 	public class AggregatedDocumentInputModel : DocumentInputModel
 	{
-		public IEnumerable<IFormFile> File { get; set; }
+		public IEnumerable<IFormFile> Files { get; set; }
 	}
 }

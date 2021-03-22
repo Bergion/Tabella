@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Routing.API", "Microservice
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.Storage", "Microservices\DocumentsManagement\Cabinet.Storage\Cabinet.Storage.csproj", "{C17DDB6D-2927-40D1-9DB7-41AD1559F957}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.UnitTests", "Microservices\DocumentsManagement\Cabinet.UnitTests\Cabinet.UnitTests.csproj", "{05353C67-9333-41C5-B9A3-C14F5F6B4E2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.IntegrationTests", "Microservices\DocumentsManagement\Cabinet.UnitTests\Cabinet.IntegrationTests.csproj", "{05353C67-9333-41C5-B9A3-C14F5F6B4E2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,8 +21,13 @@ namespace Cabinet.API.Services
 			_documentManager = documentManager ?? throw new ArgumentNullException(nameof(documentManager));
 		}
 
-		public async Task<IEnumerable<IResult<Document>>> CreateDocuments(IEnumerable<DocumentWithFileInputModel> documentsModels)
+		public async Task<IEnumerable<IResult<Document>>> CreateDocumentsAsync(IEnumerable<DocumentWithFileInputModel> documentsModels)
 		{
+			if (documentsModels is null)
+			{
+				throw new ArgumentNullException(nameof(documentsModels));
+			}
+
 			var results = new List<IResult<Document>>();
 			foreach (var documentModel in documentsModels)
 			{
@@ -32,11 +37,12 @@ namespace Cabinet.API.Services
 				try
 				{
 					await _documentManager.CreateAsync(document);
-					await _documentManager.AddOriginalAsync(document, new Original
-					{
-						File = documentModel.File,
-						ForSign = true
-					});
+					await _documentManager.AddOriginalAsync(document, 
+						new Original
+						{
+							File = documentModel.File,
+							ForSign = true
+						});
 				}
 				catch (CabinetDomainException e)
 				{
@@ -48,6 +54,8 @@ namespace Cabinet.API.Services
 					results.Add((IResult<Document>)Result.Fail("Unable to save file"));
 				}
 			}
+
+			await _context.SaveChangesAsync();
 
 			return results;
 		}

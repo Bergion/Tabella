@@ -29,7 +29,7 @@ namespace Cabinet.UnitTests
 		public void UploadObjectAsync_Success()
 		{
 			var fakeFileName = "textfile.txt";
-			var fakeFile = getFakeFile();
+			var fakeFile = TestHelper.GetFakeFileBytes();
 			var storage = new DefaultStorage(_options);
 			string path = storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
 
@@ -41,7 +41,7 @@ namespace Cabinet.UnitTests
 		public void UploadObjectAsync_DuplicateName_Success()	
 		{
 			var fakeFileName = "textfile.txt";
-			var fakeFile = getFakeFile();
+			var fakeFile = TestHelper.GetFakeFileBytes();
 			var storage = new DefaultStorage(_options);
 
 			string path1 = storage.UploadObjectAsync(fakeFileName, fakeFile).Result;
@@ -57,7 +57,7 @@ namespace Cabinet.UnitTests
 		[Test]
 		public void UploadObjectAsync_EmptyFileName_Exception()
 		{
-			var fakeFile = getFakeFile();
+			var fakeFile = TestHelper.GetFakeFileBytes();
 			var storage = new DefaultStorage(_options);
 
 			Assert.ThrowsAsync<ArgumentNullException>(() => storage.UploadObjectAsync("", fakeFile));
@@ -81,11 +81,6 @@ namespace Cabinet.UnitTests
 				File.Delete(file);
 			}
 			Directory.Delete(_testDirectory);
-		}
-
-		private byte[] getFakeFile()
-		{
-			return new byte[] { 37, 80, 68, 70, 45, 207, 206, 201 };
 		}
 	}
 }
