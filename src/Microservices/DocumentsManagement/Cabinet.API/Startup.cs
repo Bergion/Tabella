@@ -1,31 +1,46 @@
+using Cabinet.API.Infrastructure;
+using Cabinet.API.Managers;
+using Cabinet.API.Services;
+using Cabinet.API.Services.Abstractions;
+using Cabinet.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Cabinet.API
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		private readonly IWebHostEnvironment _enviroment;
+
+		public Startup(IConfiguration configuration,
+			IWebHostEnvironment enviroment)
 		{
 			Configuration = configuration;
+			_enviroment = enviroment;
 		}
 
 		public IConfiguration Configuration { get; }
 
+
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<CabinetContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection")));
+
+			services.AddFileStorage(options =>
+			{
+				options.Configure(Configuration.GetSection("DevelopmentStorage").Get<StorageConfiguration>());
+			});
+
+			services.AddTransient<DocumentManager>();
+			services.AddSingleton<IDocumentService, DocumentService>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
@@ -43,7 +58,6 @@ namespace Cabinet.API
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cabinet.API v1"));
 			}
-
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
