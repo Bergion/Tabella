@@ -1,8 +1,6 @@
 ﻿using Cabinet.API.InputModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cabinet.API.Models
 {
@@ -16,8 +14,10 @@ namespace Cabinet.API.Models
 
 		public int DocumentTypeID { get; set; }
 
+		[System.Text.Json.Serialization.JsonIgnore]
 		public DocumentType DocumentType { get; set; }
 
+		[System.Text.Json.Serialization.JsonIgnore]
 		public IEnumerable<OriginalDescription> Originals { get; set; }
 
 		public static explicit operator Document(DocumentInputModel model)

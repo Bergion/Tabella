@@ -45,16 +45,18 @@ namespace Cabinet.API.Services
 							File = documentModel.File,
 							ForSign = true
 						});
-					results.Add(Result.Ok<Document>(document));
+					results.Add(Result.Ok(document));
 				}
 				catch (CabinetDomainException e)
 				{
-					results.Add((IResult<Document>)Result.Fail(e.Message));
+					results.Add((IResult<Document>)Result.Fail(
+						$"Unable to save file {documentModel.File.FileName} " + e.Message));
 				}
 				catch(Exception e)
 				{
 					// log
-					results.Add((IResult<Document>)Result.Fail("Unable to save file"));
+					results.Add((IResult<Document>)Result.Fail(
+						$"Unable to save file {documentModel.File.FileName}"));
 				}
 			}
 
