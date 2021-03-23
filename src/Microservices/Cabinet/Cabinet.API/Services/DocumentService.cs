@@ -19,6 +19,7 @@ namespace Cabinet.API.Services
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 			_documentManager = documentManager ?? throw new ArgumentNullException(nameof(documentManager));
+			_documentManager.AutoSaveChanges = false;
 		}
 
 		public async Task<IEnumerable<IResult<Document>>> CreateDocumentsAsync(IEnumerable<DocumentWithFileInputModel> documentsModels)
