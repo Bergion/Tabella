@@ -9,6 +9,8 @@ namespace Cabinet.API.Models
 	{
 		public int ID { get; set; }
 
+		public string UniqueName { get; set; }
+
 		public string Name { get; set; }
 
 		public IEnumerable<Document> Documents { get; set; }
