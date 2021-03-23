@@ -34,7 +34,8 @@ namespace Cabinet.API.Services
 			{
 				var document = (Document)documentModel;
 				document.ID = Guid.NewGuid();
-
+				// TODO: normal default type determinant
+				document.DocumentTypeID = document.DocumentTypeID == 0 ? 1 : document.DocumentTypeID;
 				try
 				{
 					await _documentManager.CreateAsync(document);
@@ -44,6 +45,7 @@ namespace Cabinet.API.Services
 							File = documentModel.File,
 							ForSign = true
 						});
+					results.Add(Result.Ok<Document>(document));
 				}
 				catch (CabinetDomainException e)
 				{

@@ -93,6 +93,7 @@ namespace Cabinet.API.Managers
 				StorageSource = _storage.Source,
 				StoragePath = path,
 				ForSign = original.ForSign,
+				Size = original.File.Length,
 				DocumentID = document.ID
 			};
 

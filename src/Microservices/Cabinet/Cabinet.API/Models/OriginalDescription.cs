@@ -26,7 +26,7 @@ namespace Cabinet.API.Models
 		/// <summary>
 		/// Size in bytes
 		/// </summary>
-		public int Size { get; set; }
+		public long Size { get; set; }
 
 		/// <summary>
 		/// File extension
