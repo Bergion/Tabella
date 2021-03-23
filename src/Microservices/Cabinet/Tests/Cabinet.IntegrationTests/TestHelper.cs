@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Cabinet.UnitTests
 {
-	public static class TestHelper
+	internal static class TestHelper
 	{
-		public static byte[] GetFakeFileBytes()
+		internal static byte[] GetFakeFileBytes()
 		{
 			return new byte[] { 37, 80, 68, 70, 45, 207, 206, 201 };
 		}
 
-		public static Document GetFakeDocument()
+		internal static Document GetFakeDocument()
 		{
 			return new Document
 			{
@@ -25,7 +25,7 @@ namespace Cabinet.UnitTests
 			};
 		}
 
-		public static Original GetFakeOriginal()
+		internal static Original GetFakeOriginal()
 		{
 			return new Original
 			{
@@ -34,7 +34,7 @@ namespace Cabinet.UnitTests
 			};
 		}
 
-		public static IFormFile GetFakeFile()
+		internal static IFormFile GetFakeFile()
 		{
 			var fileName = Guid.NewGuid().ToString() + ".pdf";
 			var name = "testFile";

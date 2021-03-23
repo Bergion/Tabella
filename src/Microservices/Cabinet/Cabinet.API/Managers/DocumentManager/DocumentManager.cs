@@ -1,21 +1,20 @@
 ﻿using Cabinet.API.Managers.Options;
 using Cabinet.API.Infrastructure;
 using Cabinet.API.Models;
-using Cabinet.Storage;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Cabinet.API.InputModels;
+using Cabinet.Storage.Abstractions;
 
 namespace Cabinet.API.Managers
 {
 	public class DocumentManager
 	{
 		private readonly CabinetContext _context;
-		private readonly DefaultStorage _storage;
+		private readonly IStorage _storage;
 
-		public DocumentManager(CabinetContext cabinetContext, DefaultStorage storage)
+		public DocumentManager(CabinetContext cabinetContext, IStorage storage)
 		{
 			_context = cabinetContext;
 			_storage = storage;
@@ -94,6 +93,7 @@ namespace Cabinet.API.Managers
 				StorageSource = _storage.Source,
 				StoragePath = path,
 				ForSign = original.ForSign,
+				Size = original.File.Length,
 				DocumentID = document.ID
 			};
 

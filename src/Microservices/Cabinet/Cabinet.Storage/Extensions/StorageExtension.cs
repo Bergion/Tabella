@@ -20,7 +20,7 @@ namespace Cabinet.Storage
 			switch (options.Provider)
 			{
 				case StorageProvider.InMemory:
-					services.AddTransient<IStorage, DefaultStorage>();
+					services.AddSingleton<IStorage, DefaultStorage>();
 					break;
 				default:
 					throw new NotImplementedException();

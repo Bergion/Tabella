@@ -4,14 +4,16 @@ using Cabinet.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cabinet.API.Migrations
 {
     [DbContext(typeof(CabinetContext))]
-    partial class CabinetContextModelSnapshot : ModelSnapshot
+    [Migration("20210323135000_OriginalsDescription")]
+    partial class OriginalsDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +31,9 @@ namespace Cabinet.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DocumentTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrganizationID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -53,7 +58,7 @@ namespace Cabinet.API.Migrations
                     b.ToTable("DocumentType");
                 });
 
-            modelBuilder.Entity("Cabinet.API.Models.Original", b =>
+            modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -65,14 +70,23 @@ namespace Cabinet.API.Migrations
                     b.Property<string>("Extension")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ForSign")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Size")
                         .HasColumnType("int");
+
+                    b.Property<string>("StoragePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StorageSource")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
@@ -95,7 +109,7 @@ namespace Cabinet.API.Migrations
                     b.Navigation("DocumentType");
                 });
 
-            modelBuilder.Entity("Cabinet.API.Models.Original", b =>
+            modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
                 {
                     b.HasOne("Cabinet.API.Models.Document", "Document")
                         .WithMany("Originals")

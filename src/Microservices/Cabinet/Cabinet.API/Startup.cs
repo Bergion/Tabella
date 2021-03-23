@@ -40,7 +40,7 @@ namespace Cabinet.API
 			});
 
 			services.AddTransient<DocumentManager>();
-			services.AddSingleton<IDocumentService, DocumentService>();
+			services.AddTransient<IDocumentService, DocumentService>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>

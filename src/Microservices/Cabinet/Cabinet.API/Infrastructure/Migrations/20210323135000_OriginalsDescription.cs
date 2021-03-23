@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cabinet.API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class OriginalsDescription : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,7 @@ namespace Cabinet.API.Migrations
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrganizationID = table.Column<int>(type: "int", nullable: false),
                     DocumentTypeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -43,9 +44,14 @@ namespace Cabinet.API.Migrations
                 name: "Original",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Size = table.Column<int>(type: "int", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ForSign = table.Column<bool>(type: "bit", nullable: false),
+                    StorageSource = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StoragePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DocumentID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
