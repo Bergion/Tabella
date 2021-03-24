@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Controllers
 {
-	[Route("api/document")]
+	[Route("api/documents")]
 	[ApiController]
 	public class DocumentsController : ControllerBase
 	{
@@ -23,10 +23,20 @@ namespace Cabinet.API.Controllers
 			_documentService = documentService;
 		}
 
-		// POST api/document
+		// Get api/documents?pageSize=50&pageIndex=0
+		[HttpGet]
+		[ProducesResponseType((int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+		public async Task<IActionResult> GetDocumentsAsync([FromBody] DocumentsFilter filter,
+			int pageSize = 50, int pageIndex = 0)
+		{
+			var documents = await _documentService.GetDocumentsPaginatedAsync(filter, pageSize, pageIndex);
+			return Ok(documents);
+		}
+
+		// POST api/documents
 		[HttpPost]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
-		[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		public async Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documentsInputModel)
 		{

@@ -7,6 +7,10 @@ using Cabinet.API.Infrastructure.Exceptions;
 using Cabinet.API.InputModels;
 using Cabinet.API.Models;
 using Cabinet.API.Services.Abstractions;
+using Cabinet.API.ViewModels;
+using Cabinet.API.Infrastructure.Extensions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cabinet.API.Services
 {
@@ -63,6 +67,24 @@ namespace Cabinet.API.Services
 			await _context.SaveChangesAsync();
 
 			return results;
+		}
+
+		public async Task<PaginatedItemsViewModel<Document>> GetDocumentsPaginatedAsync(
+			DocumentsFilter parameters,
+			int pageSize,
+			int pageIndex)
+		{
+			var documentsQuery = _context.Documents.Filter(parameters);
+			var totalCount = await documentsQuery.LongCountAsync();
+			var documentsOnPage = await documentsQuery
+				.Skip(pageSize * pageIndex)
+				.Take(pageSize)
+				.ToListAsync();
+
+			var model = new PaginatedItemsViewModel<Document>(
+				pageIndex, pageSize, totalCount, documentsOnPage);
+
+			return model;
 		}
 	}
 }

@@ -60,17 +60,6 @@ namespace Cabinet.UnitTests.Application
 			Assert.ThrowsAsync<ArgumentNullException>(() => documentService.CreateDocumentsAsync(null));
 		}
 
-		[Test]
-		public async Task CreateDocumentsAsync_NullDocumentManager_ReturnsErrorResult()
-		{
-			IEnumerable<DocumentWithFileInputModel> documents = getFakeDocumentWithFile();
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
-
-			var result = await documentService.CreateDocumentsAsync(documents);
-
-			Assert.IsTrue(result.All(r => !r.Success && !string.IsNullOrWhiteSpace(r.ErrorMessage)));
-		}
-
 		[TearDown]
 		public void CleanUp()
 		{
