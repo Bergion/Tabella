@@ -22,7 +22,7 @@ namespace Cabinet.UnitTests.Application
 	{
 		private const string _testDirectory = "/Document service tests";
 		private DefaultStorage _storage;
-		private CabinetContext _cabinetContext;
+		private DbContextOptions<CabinetContext> _dbOptions;
 		private DocumentManager _documentManager;
 
 		[SetUp]
@@ -34,18 +34,19 @@ namespace Cabinet.UnitTests.Application
 				Source = _testDirectory
 			};
 			_storage = new DefaultStorage(storageOptions);
-			_cabinetContext = new CabinetContext(new DbContextOptionsBuilder<CabinetContext>()
+			_dbOptions = new DbContextOptionsBuilder<CabinetContext>()
 				.UseInMemoryDatabase(databaseName: "in-memory")
-				.Options);
-			_documentManager = new DocumentManager(_cabinetContext, _storage);
+				.Options;
+			_documentManager = new DocumentManager(new CabinetContext(_dbOptions), _storage);
 			Directory.CreateDirectory(_testDirectory);
 		}
 
 		[Test]
 		public async Task CreateDocumentsAsync_Success()
 		{
+			var cabinetContext = new CabinetContext(_dbOptions);
 			IEnumerable<DocumentWithFileInputModel> documents = getFakeDocumentWithFile();
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
+			var documentService = new DocumentService(cabinetContext, _documentManager);
 
 			var result = await documentService.CreateDocumentsAsync(documents);
 
@@ -55,9 +56,26 @@ namespace Cabinet.UnitTests.Application
 		[Test]
 		public void CreateDocumentsAsync_NullInputDocuments_ThrowsArgumentNullException()
 		{
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var documentService = new DocumentService(cabinetContext, _documentManager);
 
 			Assert.ThrowsAsync<ArgumentNullException>(() => documentService.CreateDocumentsAsync(null));
+		}
+
+		[Test]
+		public async Task GetDocumentsPaginatedAsync_Success()
+		{
+			var searchParameters = new DocumentsFilter();
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var document = TestHelper.GetFakeDocument();
+			cabinetContext.Documents.Add(document);
+			cabinetContext.SaveChanges();
+			var documentService = new DocumentService(cabinetContext, _documentManager);
+
+			var documents = await documentService.GetDocumentsPaginatedAsync(searchParameters, 50, 0);
+
+			Assert.AreEqual(1, documents.Count);
+			Assert.AreEqual(document.ID, documents.Data.First().ID);
 		}
 
 		[TearDown]
