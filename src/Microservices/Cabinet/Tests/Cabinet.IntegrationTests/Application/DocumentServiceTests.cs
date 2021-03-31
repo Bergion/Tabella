@@ -97,11 +97,13 @@ namespace Cabinet.UnitTests.Application
 
 		private IEnumerable<DocumentWithFileInputModel> getFakeDocumentWithFile()
 		{
-			var documents = new List<DocumentWithFileInputModel>();		
-			documents.Add(new DocumentWithFileInputModel
+			var documents = new List<DocumentWithFileInputModel>
 			{
-				File = TestHelper.GetFakeFile()
-			});
+				new DocumentWithFileInputModel
+				{
+					File = TestHelper.GetFakeFile()
+				}
+			};
 
 			return documents;
 		}

@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  cabinet.api:
+    image: ${DOCKER_REGISTRY-}cabinetapi
+    depends_on:
+      - sqldata
+    build:
+      context: .
+      dockerfile: Microservices/Cabinet/Cabinet.API/Dockerfile
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "8081"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https\:/root/aspnet/https/
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=Rvbximzs1
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"

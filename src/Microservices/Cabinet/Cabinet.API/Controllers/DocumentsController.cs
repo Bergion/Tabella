@@ -1,6 +1,7 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
 using Cabinet.API.Services.Abstractions;
+using Cabinet.API.ViewModels;
 using Cabinet.Storage.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Cabinet.API.Controllers
 		[HttpGet]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-		public async Task<IActionResult> GetDocumentsAsync([FromBody] DocumentsFilter filter,
+		public async Task<ActionResult<PaginatedItemsViewModel<Document>>> GetDocumentsAsync([FromQuery] DocumentsFilter filter,
 			int pageSize = 50, int pageIndex = 0)
 		{
 			var documents = await _documentService.GetDocumentsPaginatedAsync(filter, pageSize, pageIndex);

@@ -33,13 +33,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cabinet.UnitTests", "Micros
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{6FE9D00B-FFEF-49C7-8CAE-BB1FADBBA49D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSPA", "Web\WebSPA\WebSPA.csproj", "{33072F79-FD8E-4414-97DC-651887E67D5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA", "Web\WebSPA\WebSPA.csproj", "{33072F79-FD8E-4414-97DC-651887E67D5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{63B70C0E-3806-4DC9-9314-C3C31343ED03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Envoy", "Envoy", "{8B0D7259-E526-4219-83C2-EAF2620F8867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.HttpAggregator", "Gateways\Web.HttpAggregator\Web.HttpAggregator.csproj", "{DF3D53F1-AB33-41B9-B846-8C0BBE226AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.HttpAggregator", "Gateways\Web.HttpAggregator\Web.HttpAggregator.csproj", "{DF3D53F1-AB33-41B9-B846-8C0BBE226AFA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D6F2D3F7-3AB2-4631-AF21-2BE28BA97B61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,9 @@ Global
 		{DF3D53F1-AB33-41B9-B846-8C0BBE226AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF3D53F1-AB33-41B9-B846-8C0BBE226AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF3D53F1-AB33-41B9-B846-8C0BBE226AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F2D3F7-3AB2-4631-AF21-2BE28BA97B61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F2D3F7-3AB2-4631-AF21-2BE28BA97B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F2D3F7-3AB2-4631-AF21-2BE28BA97B61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
