@@ -42,6 +42,7 @@ namespace Cabinet.API
 			services.AddTransient<DocumentManager>();
 			services.AddTransient<IDocumentService, DocumentService>();
 
+			services.AddGrpc(options => options.EnableDetailedErrors = true);
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

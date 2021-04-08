@@ -21,7 +21,8 @@ namespace Cabinet.UnitTests
 		{
 			return new Document
 			{
-				ID = Guid.NewGuid()
+				ID = Guid.NewGuid(),
+				OrganizationID = new Random().Next(1, 100)
 			};
 		}
 

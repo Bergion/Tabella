@@ -1,6 +1,7 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
 using Cabinet.API.Services.Abstractions;
+using Cabinet.API.ViewModels;
 using Cabinet.Storage.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Controllers
 {
-	[Route("api/document")]
+	[Route("cabinet-api/[controller]")]
 	[ApiController]
 	public class DocumentsController : ControllerBase
 	{
@@ -23,10 +24,20 @@ namespace Cabinet.API.Controllers
 			_documentService = documentService;
 		}
 
-		// POST api/document
+		// Get api/documents?pageSize=50&pageIndex=0
+		[HttpGet]
+		[ProducesResponseType((int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+		public async Task<ActionResult<PaginatedItemsViewModel<Document>>> GetDocumentsAsync([FromQuery] DocumentsFilter filter,
+			int pageSize = 50, int pageIndex = 0)
+		{
+			var documents = await _documentService.GetDocumentsPaginatedAsync(filter, pageSize, pageIndex);
+			return Ok(documents);
+		}
+
+		// POST api/documents
 		[HttpPost]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
-		[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		public async Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documentsInputModel)
 		{

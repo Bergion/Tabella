@@ -22,7 +22,7 @@ namespace Cabinet.UnitTests.Application
 	{
 		private const string _testDirectory = "/Document service tests";
 		private DefaultStorage _storage;
-		private CabinetContext _cabinetContext;
+		private DbContextOptions<CabinetContext> _dbOptions;
 		private DocumentManager _documentManager;
 
 		[SetUp]
@@ -34,18 +34,19 @@ namespace Cabinet.UnitTests.Application
 				Source = _testDirectory
 			};
 			_storage = new DefaultStorage(storageOptions);
-			_cabinetContext = new CabinetContext(new DbContextOptionsBuilder<CabinetContext>()
+			_dbOptions = new DbContextOptionsBuilder<CabinetContext>()
 				.UseInMemoryDatabase(databaseName: "in-memory")
-				.Options);
-			_documentManager = new DocumentManager(_cabinetContext, _storage);
+				.Options;
+			_documentManager = new DocumentManager(new CabinetContext(_dbOptions), _storage);
 			Directory.CreateDirectory(_testDirectory);
 		}
 
 		[Test]
 		public async Task CreateDocumentsAsync_Success()
 		{
+			var cabinetContext = new CabinetContext(_dbOptions);
 			IEnumerable<DocumentWithFileInputModel> documents = getFakeDocumentWithFile();
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
+			var documentService = new DocumentService(cabinetContext, _documentManager);
 
 			var result = await documentService.CreateDocumentsAsync(documents);
 
@@ -55,20 +56,26 @@ namespace Cabinet.UnitTests.Application
 		[Test]
 		public void CreateDocumentsAsync_NullInputDocuments_ThrowsArgumentNullException()
 		{
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var documentService = new DocumentService(cabinetContext, _documentManager);
 
 			Assert.ThrowsAsync<ArgumentNullException>(() => documentService.CreateDocumentsAsync(null));
 		}
 
 		[Test]
-		public async Task CreateDocumentsAsync_NullDocumentManager_ReturnsErrorResult()
+		public async Task GetDocumentsPaginatedAsync_Success()
 		{
-			IEnumerable<DocumentWithFileInputModel> documents = getFakeDocumentWithFile();
-			var documentService = new DocumentService(_cabinetContext, _documentManager);
+			var searchParameters = new DocumentsFilter();
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var document = TestHelper.GetFakeDocument();
+			cabinetContext.Documents.Add(document);
+			cabinetContext.SaveChanges();
+			var documentService = new DocumentService(cabinetContext, _documentManager);
 
-			var result = await documentService.CreateDocumentsAsync(documents);
+			var documents = await documentService.GetDocumentsPaginatedAsync(searchParameters, 50, 0);
 
-			Assert.IsTrue(result.All(r => !r.Success && !string.IsNullOrWhiteSpace(r.ErrorMessage)));
+			Assert.AreEqual(1, documents.Count);
+			Assert.AreEqual(document.ID, documents.Data.First().ID);
 		}
 
 		[TearDown]
@@ -90,11 +97,13 @@ namespace Cabinet.UnitTests.Application
 
 		private IEnumerable<DocumentWithFileInputModel> getFakeDocumentWithFile()
 		{
-			var documents = new List<DocumentWithFileInputModel>();		
-			documents.Add(new DocumentWithFileInputModel
+			var documents = new List<DocumentWithFileInputModel>
 			{
-				File = TestHelper.GetFakeFile()
-			});
+				new DocumentWithFileInputModel
+				{
+					File = TestHelper.GetFakeFile()
+				}
+			};
 
 			return documents;
 		}
