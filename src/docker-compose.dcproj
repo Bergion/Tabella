@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>d6f2d3f7-3ab2-4631-af21-2be28ba97b61</ProjectGuid>
+    <ProjectGuid>f26fc70f-7bb1-442e-90fe-ec8ac4bd644e</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>cabinet.api</DockerServiceName>

@@ -77,6 +77,7 @@ namespace Cabinet.API.Services
 			var documentsQuery = _context.Documents.Filter(parameters);
 			var totalCount = await documentsQuery.LongCountAsync();
 			var documentsOnPage = await documentsQuery
+				.OrderByDescending(d => d.CreationDate)
 				.Skip(pageSize * pageIndex)
 				.Take(pageSize)
 				.ToListAsync();

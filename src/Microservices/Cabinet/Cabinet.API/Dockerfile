@@ -1,11 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["Microservices/Cabinet/Cabinet.API/Cabinet.API.csproj", "Microservices/Cabinet/Cabinet.API/"]
 COPY ["Microservices/Cabinet/Cabinet.Storage/Cabinet.Storage.csproj", "Microservices/Cabinet/Cabinet.Storage/"]
