@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Cabinet.UnitTests
 {
-	public class Tests
+	public class DocumentsControllerTests
 	{
 		private Mock<IDocumentService> _documentServiceMock;
 

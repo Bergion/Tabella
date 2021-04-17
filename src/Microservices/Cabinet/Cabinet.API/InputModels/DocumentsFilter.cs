@@ -10,5 +10,7 @@ namespace Cabinet.API.InputModels
 		public int? OrganizationID { get; set; }
 
 		public int[] DocTypeID { get; set; }
+
+		public int? FolderID { get; set; }
 	}
 }

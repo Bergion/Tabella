@@ -24,7 +24,7 @@ namespace Cabinet.API.Controllers
 			_documentService = documentService;
 		}
 
-		// Get api/documents?pageSize=50&pageIndex=0
+		// Get cabinet-api/v1/documents?pageSize=50&pageIndex=0
 		[HttpGet]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -35,7 +35,7 @@ namespace Cabinet.API.Controllers
 			return Ok(documents);
 		}
 
-		// POST api/documents
+		// POST cabinet-api/v1/documents
 		[HttpPost]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]

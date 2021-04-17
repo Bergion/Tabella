@@ -1,5 +1,5 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
-import Folder from "@/components/Folder/Folder.vue";
+import Folder from "@/views/FolderView.vue";
 import Counter from "@/components/Counter.vue";
 import FetchData from "@/components/FetchData.vue";
 
