@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Models
 {
+	/// <summary>
+	/// Document file description
+	/// </summary>
 	public class OriginalDescription
 	{
 		/// <summary>

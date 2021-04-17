@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Controllers
 {
-	[Route("cabinet-api/[controller]")]
+	[Route("cabinet-api/v1/[controller]")]
 	[ApiController]
 	public class DocumentsController : ControllerBase
 	{

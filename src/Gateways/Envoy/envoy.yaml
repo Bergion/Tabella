@@ -29,7 +29,7 @@ static_resources:
                 match:
                   prefix: "/c"
                 route:
-                  prefix_rewrite: "/cabinet-api"
+                  prefix_rewrite: "/cabinet-api/v1"
                   cluster: cabinet_service
   clusters:
   - name: cabinet_service

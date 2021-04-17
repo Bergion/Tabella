@@ -1,13 +1,13 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
-import Home from "@/components/Home.vue";
+import Folder from "@/components/Folder/Folder.vue";
 import Counter from "@/components/Counter.vue";
 import FetchData from "@/components/FetchData.vue";
 
 const routes = [
     {
-        path: "/",
-        name: "Home",
-        component: Home,
+        path: "/Folder",
+        name: "Folder",
+        component: Folder,
     },
     {
         path: "/Counter",
