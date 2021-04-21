@@ -3,10 +3,10 @@
         <div class="nav-menu">
             <nav-menu></nav-menu>
         </div>
-        <div class="left-sidebar">
-          <left-sidebar></left-sidebar>
-        </div>
         <div class="app-body">
+            <div class="left-sidebar">
+              <left-sidebar></left-sidebar>
+            </div>
             <router-view></router-view>    
         </div>
     </div>
@@ -41,7 +41,7 @@ export default {
 
 .left-sidebar {
   background-color: white;
-  width: 16rem;
+  width: 20rem;
 }
 
 .app-body {

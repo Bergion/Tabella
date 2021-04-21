@@ -1,6 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.css'
-import { createApp } from 'vue'
+import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
+import { createApp, h } from 'vue'
 import App from './App.vue'
-import router from './router'
+import './styles/index.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
-createApp(App).use(router).mount('#app')
+const app = createApp({
+    render: () => h(App)
+});
+
+
+import PerfectScrollbar from 'vue3-perfect-scrollbar';
+app.use(PerfectScrollbar);
+ 
+import router from './router';
+app.use(router);
+
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+app.use(VueAxios, axios);
+
+import CabinetApi from './api/cabinet.js';
+app.config.globalProperties.$cabinetApi = new CabinetApi(app);
+
+
+app.mount("#app");

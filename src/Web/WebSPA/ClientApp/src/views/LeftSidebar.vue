@@ -5,7 +5,7 @@
                 type="button" 
                 id="new-document-button"
                 class="btn btn-primary">
-                <i class="far fa-cloud-upload"></i>
+                <i class="fas fa-cloud-upload-alt"></i>
                 <span class="ml-1">
                     Upload
                 </span>
@@ -14,12 +14,20 @@
                 Formats: PDF, XML, TXT, PNG, JPEG, DOC, DOCX, XLSX
             </div>
         </div>
+        <div class="left-sidebar-body">
+            <left-sidebar-nav></left-sidebar-nav>
+        </div>
     </div>
 </template>
 
 <script>
+import LeftSidebarNav from "../components/LeftSidebar/LeftSidebarNav.vue"
+
 export default {
-    name: "LeftSidebar"
+    name: "LeftSidebar",
+    components: {
+        LeftSidebarNav
+    }
 }
 </script>
 
@@ -41,5 +49,12 @@ export default {
   padding: 0.5rem;
   font-size: 12px;
   color: gray;
+}
+
+.left-sidebar-body {
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  flex-grow: 1;
+  
 }
 </style>
