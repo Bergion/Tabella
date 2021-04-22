@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cabinet.API.Migrations
 {
-    public partial class OriginalsDescription : Migration
+    public partial class DemoVer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,11 +13,28 @@ namespace Cabinet.API.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UniqueName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocumentType", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Folders",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    OrganizationID = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Folders", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,13 +58,37 @@ namespace Cabinet.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Original",
+                name: "DocumentsAccesses",
+                columns: table => new
+                {
+                    FolderID = table.Column<int>(type: "int", nullable: false),
+                    DocumentID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentsAccesses", x => new { x.DocumentID, x.FolderID });
+                    table.ForeignKey(
+                        name: "FK_DocumentsAccesses_Document_DocumentID",
+                        column: x => x.DocumentID,
+                        principalTable: "Document",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DocumentsAccesses_Folders_FolderID",
+                        column: x => x.FolderID,
+                        principalTable: "Folders",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OriginalDescription",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Size = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<long>(type: "bigint", nullable: false),
                     Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ForSign = table.Column<bool>(type: "bit", nullable: false),
                     StorageSource = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -57,9 +98,9 @@ namespace Cabinet.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Original", x => x.ID);
+                    table.PrimaryKey("PK_OriginalDescription", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Original_Document_DocumentID",
+                        name: "FK_OriginalDescription_Document_DocumentID",
                         column: x => x.DocumentID,
                         principalTable: "Document",
                         principalColumn: "ID",
@@ -72,15 +113,26 @@ namespace Cabinet.API.Migrations
                 column: "DocumentTypeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Original_DocumentID",
-                table: "Original",
+                name: "IX_DocumentsAccesses_FolderID",
+                table: "DocumentsAccesses",
+                column: "FolderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OriginalDescription_DocumentID",
+                table: "OriginalDescription",
                 column: "DocumentID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Original");
+                name: "DocumentsAccesses");
+
+            migrationBuilder.DropTable(
+                name: "OriginalDescription");
+
+            migrationBuilder.DropTable(
+                name: "Folders");
 
             migrationBuilder.DropTable(
                 name: "Document");

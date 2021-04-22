@@ -81,7 +81,7 @@ namespace Cabinet.API.Managers
 
 			var id = Guid.NewGuid();
 			var extension = Path.GetExtension(original.File.FileName);
-			var path = Path.Combine(document.ID.ToString(), id.ToString()) + extension;
+			var path = Path.Combine(document.ID.ToString(), $"{id.ToString()}extension");
 			await _storage.UploadObjectAsync(path, bytes);
 
 			var originalFileName = Path.GetFileNameWithoutExtension(original.File.FileName);

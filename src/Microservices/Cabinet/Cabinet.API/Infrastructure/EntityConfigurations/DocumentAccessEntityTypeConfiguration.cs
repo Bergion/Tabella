@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Cabinet.API.Infrastructure.EntityConfigurations
 {
-	public class FolderEntityTypeConfiguration
-		: IEntityTypeConfiguration<Folder>
+	public class DocumentAccessEntityTypeConfiguration
+		: IEntityTypeConfiguration<DocumentAccess>
 	{
-		public void Configure(EntityTypeBuilder<Folder> builder)
+		public void Configure(EntityTypeBuilder<DocumentAccess> builder)
 		{
-			builder.ToTable("Folder");
+			builder.HasKey(a => new { a.DocumentID, a.FolderID });
 		}
 	}
 }

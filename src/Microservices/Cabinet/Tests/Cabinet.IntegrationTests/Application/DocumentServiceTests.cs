@@ -101,7 +101,8 @@ namespace Cabinet.UnitTests.Application
 			{
 				new DocumentWithFileInputModel
 				{
-					File = TestHelper.GetFakeFile()
+					File = TestHelper.GetFakeFile(),
+					FolderID = 1
 				}
 			};
 

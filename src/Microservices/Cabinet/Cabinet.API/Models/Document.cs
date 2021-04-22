@@ -15,8 +15,6 @@ namespace Cabinet.API.Models
 
 		public int DocumentTypeID { get; set; }
 
-		public int ParentFolderID { get; set; }
-
 		[System.Text.Json.Serialization.JsonIgnore]
 		public DocumentType DocumentType { get; set; }
 
@@ -24,15 +22,14 @@ namespace Cabinet.API.Models
 		public IEnumerable<OriginalDescription> Originals { get; set; }
 
 		[System.Text.Json.Serialization.JsonIgnore]
-		public Folder ParentFolder { get; set; }
+		public List<DocumentAccess> DocumentAccesses{ get; set; }
 
 		public static explicit operator Document(DocumentInputModel model)
 		{
 			return new Document()
 			{
 				OrganizationID = model.OrganizationID,
-				DocumentTypeID = model.DocumentTypeID,
-				ParentFolderID = model.ParentFolderID
+				DocumentTypeID = model.DocumentTypeID
 			};
 		}
 	}

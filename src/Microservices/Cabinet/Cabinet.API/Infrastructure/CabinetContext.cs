@@ -18,13 +18,14 @@ namespace Cabinet.API.Infrastructure
 		public DbSet<DocumentType> DocumentTypes { get; set; }
 		public DbSet<OriginalDescription> OriginalsDescriptions { get; set; }
 		public DbSet<Folder> Folders { get; set; }
+		public DbSet<DocumentAccess> DocumentsAccesses { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.ApplyConfiguration(new DocumentEntityTypeConfiguration());
 			builder.ApplyConfiguration(new DocumentTypeEntityTypeConfiguration());
 			builder.ApplyConfiguration(new OriginalDescriptionEntityTypeConfiguration());
-			builder.ApplyConfiguration(new FolderEntityTypeConfiguration());
+			builder.ApplyConfiguration(new DocumentAccessEntityTypeConfiguration());
 		}
 	}
 }

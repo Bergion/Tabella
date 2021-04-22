@@ -13,7 +13,7 @@ namespace Cabinet.API.Infrastructure.EntityConfigurations
 	{
 		public void Configure(EntityTypeBuilder<OriginalDescription> builder)
 		{
-			builder.ToTable("Original");
+			builder.ToTable("OriginalDescription");
 		}
 	}
 }

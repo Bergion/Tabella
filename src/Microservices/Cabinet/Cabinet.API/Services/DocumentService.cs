@@ -36,37 +36,58 @@ namespace Cabinet.API.Services
 			var results = new List<IResult<Document>>();
 			foreach (var documentModel in documentsModels)
 			{
-				var document = (Document)documentModel;
-				document.ID = Guid.NewGuid();
-				// TODO: normal default type determinant
-				document.DocumentTypeID = document.DocumentTypeID == 0 ? 1 : document.DocumentTypeID;
-				try
+				var result = await CreateDocumentAsync(documentModel);
+				// TODO: move?
+				if (result.Success)
 				{
-					await _documentManager.CreateAsync(document);
-					await _documentManager.AddOriginalAsync(document, 
-						new Original
-						{
-							File = documentModel.File,
-							ForSign = true
-						});
-					results.Add(Result.Ok(document));
+					_context.DocumentsAccesses.Add(new DocumentAccess
+					{
+						DocumentID = result.Value.ID,
+						FolderID = documentModel.FolderID
+					});
 				}
-				catch (CabinetDomainException e)
-				{
-					results.Add((IResult<Document>)Result.Fail(
-						$"Unable to save file {documentModel.File.FileName} " + e.Message));
-				}
-				catch(Exception e)
-				{
-					// log
-					results.Add((IResult<Document>)Result.Fail(
-						$"Unable to save file {documentModel.File.FileName}"));
-				}
+
+				results.Add(result);
 			}
 
 			await _context.SaveChangesAsync();
 
 			return results;
+		}
+
+		public async Task<IResult<Document>> CreateDocumentAsync(DocumentWithFileInputModel documentInputModel)
+		{
+			if (documentInputModel is null)
+			{
+				throw new ArgumentNullException(nameof(documentInputModel));
+			}
+
+			var document = (Document)documentInputModel;
+			document.ID = Guid.NewGuid();
+			document.DocumentTypeID = document.DocumentTypeID;
+			try
+			{
+				await _documentManager.CreateAsync(document);
+				await _documentManager.AddOriginalAsync(document,
+					new Original
+					{
+						File = documentInputModel.File,
+						ForSign = true
+					});
+				return Result.Ok(document);
+			}
+			catch (CabinetDomainException e)
+			{
+				return (IResult<Document>)Result.Fail(
+					$"Unable to save file {documentInputModel.File.FileName} " + e.Message);
+			}
+			catch (Exception e)
+			{
+				// log
+			}
+
+			return (IResult<Document>)Result.Fail(
+					$"Unable to save file {documentInputModel.File.FileName}");
 		}
 
 		public async Task<PaginatedItemsViewModel<Document>> GetDocumentsPaginatedAsync(

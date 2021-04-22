@@ -26,6 +26,6 @@ namespace Cabinet.API.Models
 		public DateTime CreationDate { get; set; } = DateTime.Now;
 
 		[System.Text.Json.Serialization.JsonIgnore]
-		public IEnumerable<Document> Documents { get; set; }
+		public IEnumerable<DocumentAccess> DocumentAccesses { get; set; }
 	}
 }
