@@ -115,7 +115,7 @@ namespace Cabinet.API.Infrastructure
                     FileName = Path.GetFileNameWithoutExtension(file),
                     ForSign = true,
                     Size = fileInfo.Length,
-                    StoragePath = Path.Combine(document.ID.ToString(), originalId.ToString()),
+                    StoragePath = Path.Combine(document.ID.ToString(), $"{originalId}{fileInfo.Extension}"),
                     StorageSource = storage.Source
                 };
 
