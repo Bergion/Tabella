@@ -9,6 +9,8 @@ namespace Cabinet.API.Models
 	{
 		public Guid ID { get; set; }
 
+		public string Name { get; set; }
+
 		public DateTime CreationDate { get; set; } = DateTime.Now;
 
 		public int OrganizationID { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,14 @@ namespace Cabinet.API.Infrastructure.Extensions
 				d.Where(x => filter.DocTypeID.Contains(x.DocumentTypeID));
 			}
 
-			//if (filter.FolderID is { } folderId)
-			//{
-			//	d.Where(x => x.ParentFolderID == folderId);
-			//}
+			if (filter.FolderID is { } folderId)
+			{
+				d.Include(d => d.DocumentAccesses)
+					.Where(d => d.DocumentAccesses.Any(da => da.FolderID == folderId));
+			}
+
+			d.Include(d => d.DocumentType)
+				.Include(d => d.Originals);
 
 			return d;
 		}

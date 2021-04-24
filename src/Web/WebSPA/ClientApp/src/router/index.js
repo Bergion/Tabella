@@ -5,8 +5,8 @@ import FetchData from "@/components/FetchData.vue";
 
 const routes = [
     {
-        path: "/Folder",
-        name: "Folder",
+        path: "/folder",
+        name: "folder",
         component: Folder,
     },
     {

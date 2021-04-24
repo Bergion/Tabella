@@ -37,7 +37,7 @@ namespace Cabinet.API.Controllers
 
 		// POST cabinet-api/v1/documents
 		[HttpPost]
-		[ProducesResponseType((int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.Created)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		public async Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documentsInputModel)
 		{
@@ -62,7 +62,7 @@ namespace Cabinet.API.Controllers
 				return BadRequest("Unable to create document");
 			}
 
-			return Ok(result);
+			return Created(nameof(CreateDocumentsAsync), result);
 		}
 	}
 }

@@ -27,17 +27,17 @@
         <div class="info">
           <div class="doc-name">
             <span class="clickable">
-              Document 12345 
+              {{ document.name }}
             </span>
           </div>
           <div class="doc-type">
-            <span>Act</span>
+            <span>{{ document.documentType }}</span>
           </div>
         </div>
       </div>
       <div class="col-date">
         <span>
-          11.08.2000
+          {{ formatedDate }}
         </span>
       </div>
       <div class="col-state">
@@ -54,7 +54,22 @@
 <script>
 
 export default {
-    name: "FolderItem",		
+  name: "FolderItem",	
+  props: {
+    item: {
+      type: Object,
+      default: null,
+    }
+  },
+  computed: {
+    document() {
+      console.log(this.item);
+      return this.item ? this.item : {};
+    },
+    formatedDate() {
+      return new Date(this.item.creationDate).toLocaleString().replaceAll('/', '-');
+    }
+  }
 }
 </script>
 

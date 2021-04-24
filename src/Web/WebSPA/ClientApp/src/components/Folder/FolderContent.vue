@@ -22,8 +22,10 @@
     <!-- Body -->
     <div class="folder-list-body">
       <perfect-scrollbar>
-          <div v-for="(item, index) in items" :key="index">
-            <folder-item />
+          <div v-for="(item, index) in documents" :key="index">
+            <folder-item
+              :item="item"
+            />
           </div>
       </perfect-scrollbar>     
     </div>
@@ -40,11 +42,22 @@ export default {
   },
   data() {
     return {
-      items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+      docs: []
+    }
+  },
+  computed: {
+    documents() {
+      return this.docs;
     }
   },
   mounted() {
-    this.$cabinetApi.getDocuments();
+    this.$cabinetApi.getDocuments()
+      .then((result) => {
+        console.log(result)
+        if (result && result.data) {
+          this.docs = result.data;
+        }
+      });
   }
 }
 </script>

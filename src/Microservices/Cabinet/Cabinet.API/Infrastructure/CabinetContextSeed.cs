@@ -103,7 +103,8 @@ namespace Cabinet.API.Infrastructure
                 {
                     ID = Guid.NewGuid(),
                     OrganizationID = organizationID,
-                    DocumentTypeID = documentTypeID
+                    DocumentTypeID = documentTypeID,
+                    Name = Path.GetFileNameWithoutExtension(file)
                 };
                 var fileInfo = new FileInfo(file);
                 var originalId = Guid.NewGuid();
