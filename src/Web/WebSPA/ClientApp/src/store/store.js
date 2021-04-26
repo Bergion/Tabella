@@ -2,18 +2,29 @@ import { createStore } from 'vuex'
 
 
 export const store = createStore({
-    state() {
+    state () {
         return {
-            folders: []
+            userInfo: {
+                // remove
+                organizationId: null
+            },
+            currentOrganization: {
+                id: null
+            }
         }
     },
 
     mutations: {
-        setFolders(state, folders) {
-            if (folders && folders.length) {
-                console.log(folders);
-                state.folders = folders
-            }
+        setUserInfo(state, userInfo) {
+            state.userInfo = userInfo;
+        },
+        setCurrentOrganization(state, currentOrganization) {
+            state.currentOrganization = currentOrganization;
+        }
+    },
+    getters: {
+        currentOrganization: state => {
+            return state.currentOrganization;
         }
     }
 })

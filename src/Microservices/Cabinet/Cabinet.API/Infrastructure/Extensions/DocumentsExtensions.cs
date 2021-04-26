@@ -12,25 +12,24 @@ namespace Cabinet.API.Infrastructure.Extensions
 	{
 		public static IQueryable<Document> Filter(this IQueryable<Document> d, DocumentsFilter filter)
 		{
-			if (filter.OrganizationID is { } orgId)
+			if (filter.OrganizationOwnerID is { } orgOwnerId)
 			{
-				d.Where(x => x.OrganizationID == orgId);
+				d = d.Where(x => x.OrganizationID == orgOwnerId);
 			}
 
-			if (filter.DocTypeID is not null && filter.DocTypeID.Any())
+			if (filter.DocTypeID is { } && filter.DocTypeID.Any())
 			{
-				d.Where(x => filter.DocTypeID.Contains(x.DocumentTypeID));
+				d = d.Where(x => filter.DocTypeID.Contains(x.DocumentTypeID));
 			}
 
-			if (filter.FolderID is { } folderId)
+			if (filter.OrganizationReceiverID is { } orgReceiverId)
 			{
-				d.Include(d => d.DocumentAccesses)
-					.Where(d => d.DocumentAccesses.Any(da => da.FolderID == folderId));
+				d = d.Include(d => d.DocumentAccesses)
+					.Where(d => d.DocumentAccesses.Any(d => d.OrganizationID == orgReceiverId));
 			}
 
-			d.Include(d => d.DocumentType)
+			d = d.Include(d => d.DocumentType)
 				.Include(d => d.Originals);
-
 			return d;
 		}
 	}

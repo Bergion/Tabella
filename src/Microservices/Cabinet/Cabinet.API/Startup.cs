@@ -41,7 +41,6 @@ namespace Cabinet.API
 
 			services.AddTransient<DocumentManager>();
 			services.AddTransient<IDocumentService, DocumentService>();
-			services.AddTransient<IFolderService, FolderService>();
 
 			services.AddCors(options =>
 			{

@@ -34,6 +34,7 @@
 
 <script>
 import FolderItem from './FolderItem'
+import { mapGetters } from 'vuex';
 
 export default {
   name: "FolderContent",
@@ -46,18 +47,39 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      currentOrg: 'currentOrganization'
+    }),
     documents() {
       return this.docs;
     }
   },
-  mounted() {
-    this.$cabinetApi.getDocuments()
+  methods: {
+    getDocuments(folder) {
+      let searchParams = {};
+      if (folder === 'incoming') {
+        searchParams.organizationReceiverId = this.currentOrg.id;
+      } else if (folder === 'outgoing') {
+        searchParams.organizationOwnerId = this.currentOrg.id;
+      }
+
+    this.$cabinetApi.getDocuments(searchParams)
       .then((result) => {
         console.log(result)
         if (result && result.data) {
           this.docs = result.data;
         }
       });
+    }
+  },
+  created() {
+    this.getDocuments(this.$route.name);
+  },
+   watch: {
+    $route(to, from) {
+      // react to route changes...
+      this.getDocuments(to.name);
+    }
   }
 }
 </script>

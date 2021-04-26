@@ -31,6 +31,11 @@ namespace Cabinet.API.Controllers
 		public async Task<ActionResult<PaginatedItemsViewModel<Document>>> GetDocumentsAsync([FromQuery] DocumentsFilter filter,
 			int pageSize = 50, int pageIndex = 0)
 		{
+			if (!filter.IsValid)
+			{
+				return BadRequest();
+			}
+
 			var documents = await _documentService.GetDocumentsPaginatedAsync(filter, pageSize, pageIndex);
 			return Ok(documents);
 		}

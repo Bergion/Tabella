@@ -18,11 +18,6 @@ namespace Cabinet.API.InputModels
 		/// Document type identifier 
 		/// </summary>
 		public int DocumentTypeID { get; set; }
-
-		/// <summary>
-		/// Folder identifier
-		/// </summary>
-		public int FolderID { get; set; }
 	}
 
 	public class DocumentWithFileInputModel : DocumentInputModel

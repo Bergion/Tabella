@@ -13,7 +13,7 @@ namespace Cabinet.API.Infrastructure.EntityConfigurations
 	{
 		public void Configure(EntityTypeBuilder<DocumentAccess> builder)
 		{
-			builder.HasKey(a => new { a.DocumentID, a.FolderID });
+			builder.HasKey(a => new { a.DocumentID, a.OrganizationID });
 		}
 	}
 }

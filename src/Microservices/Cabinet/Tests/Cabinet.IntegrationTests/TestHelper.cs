@@ -17,6 +17,15 @@ namespace Cabinet.UnitTests
 			return new byte[] { 37, 80, 68, 70, 45, 207, 206, 201 };
 		}
 
+		internal static DocumentType GetFakeDocumentType()
+		{
+			return new DocumentType
+			{
+				Name = "Document",
+				UniqueName = Guid.NewGuid().ToString()
+			};
+		}
+
 		internal static Document GetFakeDocument()
 		{
 			return new Document

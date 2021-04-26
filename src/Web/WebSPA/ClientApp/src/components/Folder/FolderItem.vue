@@ -63,7 +63,6 @@ export default {
   },
   computed: {
     document() {
-      console.log(this.item);
       return this.item ? this.item : {};
     },
     formatedDate() {

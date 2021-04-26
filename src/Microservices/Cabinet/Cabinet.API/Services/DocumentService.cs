@@ -38,16 +38,6 @@ namespace Cabinet.API.Services
 			foreach (var documentModel in documentsModels)
 			{
 				var result = await CreateDocumentAsync(documentModel);
-				// TODO: move?
-				if (result.Success)
-				{
-					_context.DocumentsAccesses.Add(new DocumentAccess
-					{
-						DocumentID = result.Value.ID,
-						FolderID = documentModel.FolderID
-					});
-				}
-
 				results.Add(result);
 			}
 

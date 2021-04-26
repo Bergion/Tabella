@@ -5,8 +5,17 @@ import FetchData from "@/components/FetchData.vue";
 
 const routes = [
     {
-        path: "/folder",
-        name: "folder",
+        path: '/',
+        redirect: '/outgoing'
+    },
+    {
+        path: "/incoming",
+        name: "incoming",
+        component: Folder,
+    },
+    {
+        path: "/outgoing",
+        name: "outgoing",
         component: Folder,
     },
     {

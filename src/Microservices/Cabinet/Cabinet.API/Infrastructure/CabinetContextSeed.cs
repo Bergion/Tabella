@@ -38,14 +38,6 @@ namespace Cabinet.API.Infrastructure
             {
                 var contentRootPath = _env.ContentRootPath;
 
-
-                var folder = createOutgoingFolder();
-                if (!_context.Folders.Any())
-                {
-                    await _context.Folders.AddAsync(folder);
-                    await _context.SaveChangesAsync();
-                }
-
                 var docType = createDefaultDocumentType();
                 if (!_context.DocumentTypes.Any())
                 {
@@ -55,22 +47,10 @@ namespace Cabinet.API.Infrastructure
 
                 if (!_context.Documents.Any())
                 {
-                    var documents = await seedDocuments(_context, _storage, folder.OrganizationID, docType.ID);
-                    await setDocumentsAccess(documents, folder.ID);
+                    var documents = await seedDocuments(_context, _storage, docType.ID);
                 }
             });
         }
-
-        private async Task setDocumentsAccess(IEnumerable<Document> documents, int folderID)
-		{
-            _context.DocumentsAccesses.AddRange(documents.Select(d => new DocumentAccess
-            {
-                DocumentID = d.ID,
-                FolderID = folderID
-            }));
-
-            await _context.SaveChangesAsync();
-		}
    
         private DocumentType createDefaultDocumentType()
         {
@@ -81,19 +61,8 @@ namespace Cabinet.API.Infrastructure
             };
         }
 
-        private Folder createOutgoingFolder()
-		{
-            return new Folder
-            {
-                Name = "Outgoing",
-                Type = FolderType.Outgoing,
-                OrganizationID = 1
-            };
-		}
-
         private async Task<IEnumerable<Document>> seedDocuments(CabinetContext _context,
             IStorage storage,
-            int organizationID,
             int documentTypeID)
 		{
             var files = Directory.GetFiles($"{_env.WebRootPath}/Seed");
@@ -102,7 +71,7 @@ namespace Cabinet.API.Infrastructure
                 var document = new Document
                 {
                     ID = Guid.NewGuid(),
-                    OrganizationID = organizationID,
+                    OrganizationID = 1,
                     DocumentTypeID = documentTypeID,
                     Name = Path.GetFileNameWithoutExtension(file)
                 };

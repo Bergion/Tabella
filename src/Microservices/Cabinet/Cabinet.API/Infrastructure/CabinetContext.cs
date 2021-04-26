@@ -17,7 +17,6 @@ namespace Cabinet.API.Infrastructure
 		public DbSet<Document> Documents { get; set; }
 		public DbSet<DocumentType> DocumentTypes { get; set; }
 		public DbSet<OriginalDescription> OriginalsDescriptions { get; set; }
-		public DbSet<Folder> Folders { get; set; }
 		public DbSet<DocumentAccess> DocumentsAccesses { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)

@@ -7,11 +7,9 @@ namespace Cabinet.API.Models
 {
 	public class DocumentAccess
 	{
-		public int FolderID { get; set; }
+		public int OrganizationID { get; set; }
 
 		public Guid DocumentID { get; set; }
-
-		public Folder Folder { get; set; }
 
 		public Document Document { get; set; }
 	}

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
-import { createApp, h } from 'vue'
+import { createApp, h, vModelCheckbox } from 'vue'
 import App from './App.vue'
 import './styles/index.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -11,14 +11,11 @@ import { mapMutations } from "vuex";
 const app = createApp({
     render: () => h(App),
     created() {
-        this.$cabinetApi.getFolders({orgId: 1})
-        .then((result) => {
-            this.setFolders(result);
-        });
+        this.setCurrentOrg({id: 1});
     },
     methods: {
         ...mapMutations({
-            setFolders: 'setFolders'
+            setCurrentOrg: 'setCurrentOrganization'
         })
     }
 });
