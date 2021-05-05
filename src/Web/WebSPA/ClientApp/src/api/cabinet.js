@@ -14,10 +14,20 @@ export default function CabinetApi(app) {
         return response.data;
     }
 
-    async function createDocuments(createParameters) {
-        let form = new FormData(createParameters);
-        let response = await this.app.$http.post(this.documentsApi, {
-            form
+    async function createDocuments(createParameters, files) {
+        let formData = new FormData();
+        for (let i in createParameters) {
+            formData.append(i, createParameters[i]);
+        }
+
+        for (let file of files) {
+            formData.append('files', file);
+        }
+
+        let response = await this.app.$http.post(this.documentsApi, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         });
 
         return response.data

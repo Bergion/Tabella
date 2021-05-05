@@ -3,8 +3,9 @@
         <div class="left-sidebar-top">
             <button
                 type="button" 
+                @click="createDocuments"
                 id="new-document-button"
-                class="btn btn-primary">
+                class="create-button btn btn-primary">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <span class="ml-1">
                     Upload
@@ -27,6 +28,11 @@ export default {
     name: "LeftSidebar",
     components: {
         LeftSidebarNav
+    },
+    methods: {
+        createDocuments() {
+            this.$eventBus.emit('createDocuments');
+        }
     }
 }
 </script>
@@ -56,5 +62,9 @@ export default {
   padding-bottom: 1rem;
   flex-grow: 1;
   
+}
+
+.create-button {
+    height: auto;
 }
 </style>

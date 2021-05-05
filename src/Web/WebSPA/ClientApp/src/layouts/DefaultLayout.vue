@@ -1,25 +1,29 @@
 <template>
-    <div class="app-main-container">
-        <div class="nav-menu">
-            <nav-menu></nav-menu>
-        </div>
-        <div class="app-body">
-            <div class="left-sidebar">
-              <left-sidebar></left-sidebar>
-            </div>
-            <router-view></router-view>    
-        </div>
+  <div class="app-main-container">
+    <div class="nav-menu">
+      <nav-menu></nav-menu>
     </div>
+    <div class="app-body">
+      <div class="left-sidebar">
+        <left-sidebar></left-sidebar>
+      </div>
+      <router-view></router-view>    
+    </div>
+    <document-manager/> 
+  </div>
 </template>
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
 import LeftSidebar from '../views/LeftSidebar.vue'
+import DocumentManager from '../components/DocumentManager.vue';
+
 export default {
     name : "DefaultLayout",
     components: {
       NavMenu,
-      LeftSidebar
+      LeftSidebar,
+      DocumentManager
     }
 }
 </script>

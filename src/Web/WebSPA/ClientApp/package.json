@@ -10,15 +10,18 @@
   },
   "dependencies": {
     "axios": "^0.20.0-0",
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^4.6.0",
     "core-js": "^3.7.0",
+    "jquery": "^3.6.0",
+    "mitt": "^2.1.0",
     "perfect-scrollbar": "^1.5.0",
-    "vue": "^3.0.2",
+    "popper.js": "^1.16.1",
+    "primeicons": "^4.1.0",
+    "primevue": "^3.3.5",
+    "vue": "^3.0.11",
     "vue-axios": "^3.2.4",
     "vue-loader-v16": "npm:vue-loader@^16.0.0-alpha.3",
-    "vue-perfect-scrollbar": "^0.2.1",
     "vue-router": "^4.0.0-rc.5",
-    "vue2-perfect-scrollbar": "^1.5.0",
     "vue3-perfect-scrollbar": "^1.5.5",
     "vuex": "^4.0.0"
   },
@@ -43,7 +46,7 @@
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended"
-    ],  
+    ],
     "parserOptions": {
       "parser": "babel-eslint"
     },

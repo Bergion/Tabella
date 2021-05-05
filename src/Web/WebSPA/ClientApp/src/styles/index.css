@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Poppins&display=swap');
 
 body {
     overflow: hidden;
@@ -11,5 +12,33 @@ a {
     }
 
 .btn {
-    border-radius: 1rem;
+    border-radius: 2rem;
+    height: 4rem;
+}
+
+.app-main-container {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.btn-white {
+    border-color: var(--primary);
+}
+    .btn-white:hover {
+        background-color: #f1f9ff;
+    }
+
+.modal-header {
+    border-bottom: hidden;
+}
+
+    .modal-header .close {
+        color: var(--primary);
+    }
+
+.modal-footer {
+    border-top: hidden;
+}
+
+.p-dropdown-panel {
+    z-index: 999999 !important;
 }

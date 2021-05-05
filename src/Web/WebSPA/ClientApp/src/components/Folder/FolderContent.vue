@@ -22,7 +22,7 @@
     <!-- Body -->
     <div class="folder-list-body">
       <perfect-scrollbar>
-          <div v-for="(item, index) in documents" :key="index">
+          <div v-for="item in documents" :key="item.id">
             <folder-item
               :item="item"
             />
@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     getDocuments(folder) {
+      folder = folder ? folder : this.$route.name;
       let searchParams = {};
       if (folder === 'incoming') {
         searchParams.organizationReceiverId = this.currentOrg.id;
@@ -63,19 +64,28 @@ export default {
         searchParams.organizationOwnerId = this.currentOrg.id;
       }
 
-    this.$cabinetApi.getDocuments(searchParams)
-      .then((result) => {
-        console.log(result)
-        if (result && result.data) {
-          this.docs = result.data;
-        }
-      });
+      this.$cabinetApi.getDocuments(searchParams)
+        .then((result) => {
+          console.log(result)
+          if (result && result.data) {
+            this.docs = result.data;
+          }
+        });
+    },
+    onFolderReload() {
+      this.getDocuments()
     }
   },
   created() {
-    this.getDocuments(this.$route.name);
+    this.getDocuments();
   },
-   watch: {
+  beforeMount() {
+    this.$eventBus.on('reloadFolder', this.onFolderReload);
+  },
+  beforeUnmount() {
+    this.$eventBus.off('reloadFolder', this.onFolderReload);
+  },
+  watch: {
     $route(to, from) {
       // react to route changes...
       this.getDocuments(to.name);
@@ -85,6 +95,11 @@ export default {
 </script>
 
 <style>
+.form-check-input {
+  width: 15px;
+  height: 15px;
+  margin-top: 0.25rem;
+}
 .folder-list-container {
   display: flex;
   flex-direction: column;
