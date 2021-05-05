@@ -2,13 +2,13 @@
 
 namespace Cabinet.API.Migrations
 {
-    public partial class UniqueDocTypeName : Migration
+    public partial class AddedDocumentName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "UniqueName",
-                table: "DocumentType",
+                name: "Name",
+                table: "Document",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -16,8 +16,8 @@ namespace Cabinet.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UniqueName",
-                table: "DocumentType");
+                name: "Name",
+                table: "Document");
         }
     }
 }

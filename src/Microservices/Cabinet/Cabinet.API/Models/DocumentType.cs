@@ -13,6 +13,7 @@ namespace Cabinet.API.Models
 
 		public string Name { get; set; }
 
+		[System.Text.Json.Serialization.JsonIgnore]
 		public IEnumerable<Document> Documents { get; set; }
 	}
 }

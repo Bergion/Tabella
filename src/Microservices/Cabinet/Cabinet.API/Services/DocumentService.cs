@@ -11,6 +11,7 @@ using Cabinet.API.ViewModels;
 using Cabinet.API.Infrastructure.Extensions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace Cabinet.API.Services
 {
@@ -36,32 +37,8 @@ namespace Cabinet.API.Services
 			var results = new List<IResult<Document>>();
 			foreach (var documentModel in documentsModels)
 			{
-				var document = (Document)documentModel;
-				document.ID = Guid.NewGuid();
-				// TODO: normal default type determinant
-				document.DocumentTypeID = document.DocumentTypeID == 0 ? 1 : document.DocumentTypeID;
-				try
-				{
-					await _documentManager.CreateAsync(document);
-					await _documentManager.AddOriginalAsync(document, 
-						new Original
-						{
-							File = documentModel.File,
-							ForSign = true
-						});
-					results.Add(Result.Ok(document));
-				}
-				catch (CabinetDomainException e)
-				{
-					results.Add((IResult<Document>)Result.Fail(
-						$"Unable to save file {documentModel.File.FileName} " + e.Message));
-				}
-				catch(Exception e)
-				{
-					// log
-					results.Add((IResult<Document>)Result.Fail(
-						$"Unable to save file {documentModel.File.FileName}"));
-				}
+				var result = await CreateDocumentAsync(documentModel);
+				results.Add(result);
 			}
 
 			await _context.SaveChangesAsync();
@@ -69,7 +46,43 @@ namespace Cabinet.API.Services
 			return results;
 		}
 
-		public async Task<PaginatedItemsViewModel<Document>> GetDocumentsPaginatedAsync(
+		public async Task<IResult<Document>> CreateDocumentAsync(DocumentWithFileInputModel documentInputModel)
+		{
+			if (documentInputModel is null)
+			{
+				throw new ArgumentNullException(nameof(documentInputModel));
+			}
+
+			var document = (Document)documentInputModel;
+			document.ID = Guid.NewGuid();
+			document.DocumentTypeID = document.DocumentTypeID;
+			document.Name = Path.GetFileNameWithoutExtension(documentInputModel.File.FileName);
+			try
+			{
+				await _documentManager.CreateAsync(document);
+				await _documentManager.AddOriginalAsync(document,
+					new Original
+					{
+						File = documentInputModel.File,
+						ForSign = true
+					});
+				return Result.Ok(document);
+			}
+			catch (CabinetDomainException e)
+			{
+				return (IResult<Document>)Result.Fail(
+					$"Unable to save file {documentInputModel.File.FileName} " + e.Message);
+			}
+			catch (Exception e)
+			{
+				// log
+			}
+
+			return (IResult<Document>)Result.Fail(
+					$"Unable to save file {documentInputModel.File.FileName}");
+		}
+
+		public async Task<PaginatedItemsViewModel<DocumentViewModel>> GetDocumentsPaginatedAsync(
 			DocumentsFilter parameters,
 			int pageSize,
 			int pageIndex)
@@ -80,9 +93,17 @@ namespace Cabinet.API.Services
 				.OrderByDescending(d => d.CreationDate)
 				.Skip(pageSize * pageIndex)
 				.Take(pageSize)
+				.Select(d => new DocumentViewModel
+				{
+					ID = d.ID,
+					CreationDate = d.CreationDate,
+					Name = d.Name,
+					Extension = d.Originals.Where(o => o.ForSign).Select(o => o.Extension).FirstOrDefault(),
+					DocumentType = d.DocumentType.Name
+				})
 				.ToListAsync();
 
-			var model = new PaginatedItemsViewModel<Document>(
+			var model = new PaginatedItemsViewModel<DocumentViewModel>(
 				pageIndex, pageSize, totalCount, documentsOnPage);
 
 			return model;

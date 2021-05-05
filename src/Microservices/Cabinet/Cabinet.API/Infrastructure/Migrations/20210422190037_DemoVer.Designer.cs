@@ -4,14 +4,16 @@ using Cabinet.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cabinet.API.Migrations
 {
     [DbContext(typeof(CabinetContext))]
-    partial class CabinetContextModelSnapshot : ModelSnapshot
+    [Migration("20210422190037_DemoVer")]
+    partial class DemoVer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,6 +43,21 @@ namespace Cabinet.API.Migrations
                     b.ToTable("Document");
                 });
 
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.Property<Guid>("DocumentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FolderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentID", "FolderID");
+
+                    b.HasIndex("FolderID");
+
+                    b.ToTable("DocumentsAccesses");
+                });
+
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
                 {
                     b.Property<int>("ID")
@@ -57,6 +74,30 @@ namespace Cabinet.API.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.Folder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrganizationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -96,7 +137,7 @@ namespace Cabinet.API.Migrations
 
                     b.HasIndex("DocumentID");
 
-                    b.ToTable("Original");
+                    b.ToTable("OriginalDescription");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
@@ -108,6 +149,25 @@ namespace Cabinet.API.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Cabinet.API.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cabinet.API.Models.Folder", "Folder")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("FolderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Folder");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -123,12 +183,19 @@ namespace Cabinet.API.Migrations
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
                 {
+                    b.Navigation("DocumentAccesses");
+
                     b.Navigation("Originals");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
                 {
                     b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.Folder", b =>
+                {
+                    b.Navigation("DocumentAccesses");
                 });
 #pragma warning restore 612, 618
         }

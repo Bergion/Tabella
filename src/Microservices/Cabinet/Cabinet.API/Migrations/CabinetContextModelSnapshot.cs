@@ -4,16 +4,14 @@ using Cabinet.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cabinet.API.Migrations
 {
     [DbContext(typeof(CabinetContext))]
-    [Migration("20210323140832_OriginalSize")]
-    partial class OriginalSize
+    partial class CabinetContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +31,9 @@ namespace Cabinet.API.Migrations
                     b.Property<int>("DocumentTypeID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrganizationID")
                         .HasColumnType("int");
 
@@ -41,6 +42,19 @@ namespace Cabinet.API.Migrations
                     b.HasIndex("DocumentTypeID");
 
                     b.ToTable("Document");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.Property<Guid>("DocumentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrganizationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentID", "OrganizationID");
+
+                    b.ToTable("DocumentsAccesses");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
@@ -98,7 +112,7 @@ namespace Cabinet.API.Migrations
 
                     b.HasIndex("DocumentID");
 
-                    b.ToTable("Original");
+                    b.ToTable("OriginalDescription");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
@@ -110,6 +124,17 @@ namespace Cabinet.API.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Cabinet.API.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -125,6 +150,8 @@ namespace Cabinet.API.Migrations
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
                 {
+                    b.Navigation("DocumentAccesses");
+
                     b.Navigation("Originals");
                 });
 

@@ -9,6 +9,8 @@ namespace Cabinet.API.Models
 	{
 		public Guid ID { get; set; }
 
+		public string Name { get; set; }
+
 		public DateTime CreationDate { get; set; } = DateTime.Now;
 
 		public int OrganizationID { get; set; }
@@ -20,6 +22,9 @@ namespace Cabinet.API.Models
 
 		[System.Text.Json.Serialization.JsonIgnore]
 		public IEnumerable<OriginalDescription> Originals { get; set; }
+
+		[System.Text.Json.Serialization.JsonIgnore]
+		public List<DocumentAccess> DocumentAccesses{ get; set; }
 
 		public static explicit operator Document(DocumentInputModel model)
 		{

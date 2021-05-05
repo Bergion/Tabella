@@ -65,17 +65,46 @@ namespace Cabinet.UnitTests.Application
 		[Test]
 		public async Task GetDocumentsPaginatedAsync_Success()
 		{
-			var searchParameters = new DocumentsFilter();
 			var cabinetContext = new CabinetContext(_dbOptions);
+			var docType = TestHelper.GetFakeDocumentType();
+			cabinetContext.DocumentTypes.Add(docType);
+			cabinetContext.SaveChanges();
 			var document = TestHelper.GetFakeDocument();
+			document.DocumentTypeID = docType.ID;
 			cabinetContext.Documents.Add(document);
 			cabinetContext.SaveChanges();
+			var searchParameters = new DocumentsFilter
+			{
+				OrganizationOwnerID = document.OrganizationID
+			};
 			var documentService = new DocumentService(cabinetContext, _documentManager);
 
 			var documents = await documentService.GetDocumentsPaginatedAsync(searchParameters, 50, 0);
 
-			Assert.AreEqual(1, documents.Count);
+			Assert.AreEqual(1, documents.Data.Count());
 			Assert.AreEqual(document.ID, documents.Data.First().ID);
+		}
+
+		[Test]
+		public async Task GetDocumentsPaginatedAsync_ByOrganizationReceiver_Success()
+		{
+			var cabinetContext = new CabinetContext(_dbOptions);
+			var docType = TestHelper.GetFakeDocumentType();
+			cabinetContext.DocumentTypes.Add(docType);
+			cabinetContext.SaveChanges();
+			var document = TestHelper.GetFakeDocument();
+			document.DocumentTypeID = docType.ID;
+			cabinetContext.Documents.Add(document);
+			cabinetContext.SaveChanges();
+			var searchParameters = new DocumentsFilter
+			{
+				OrganizationReceiverID = document.OrganizationID
+			};
+			var documentService = new DocumentService(cabinetContext, _documentManager);
+
+			var documents = await documentService.GetDocumentsPaginatedAsync(searchParameters, 50, 0);
+
+			Assert.AreEqual(0, documents.Data.Count());
 		}
 
 		[TearDown]
@@ -93,6 +122,11 @@ namespace Cabinet.UnitTests.Application
 				Directory.Delete(dir);
 			}
 			Directory.Delete(_testDirectory);
+			var cabinetContext = new CabinetContext(_dbOptions);
+			cabinetContext.Documents.RemoveRange(cabinetContext.Documents);
+			cabinetContext.DocumentTypes.RemoveRange(cabinetContext.DocumentTypes);
+			cabinetContext.DocumentsAccesses.RemoveRange(cabinetContext.DocumentsAccesses);
+			cabinetContext.SaveChanges();
 		}
 
 		private IEnumerable<DocumentWithFileInputModel> getFakeDocumentWithFile()
@@ -101,7 +135,7 @@ namespace Cabinet.UnitTests.Application
 			{
 				new DocumentWithFileInputModel
 				{
-					File = TestHelper.GetFakeFile()
+					File = TestHelper.GetFakeFile(),
 				}
 			};
 

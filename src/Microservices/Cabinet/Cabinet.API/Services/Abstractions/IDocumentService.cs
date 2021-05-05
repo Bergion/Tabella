@@ -10,7 +10,7 @@ namespace Cabinet.API.Services.Abstractions
 {
 	public interface IDocumentService
 	{
-		Task<PaginatedItemsViewModel<Document>> GetDocumentsPaginatedAsync(
+		Task<PaginatedItemsViewModel<DocumentViewModel>> GetDocumentsPaginatedAsync(
 			DocumentsFilter parameters, 
 			int pageSize,
 			int pageIndex);

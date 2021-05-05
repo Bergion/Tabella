@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cabinet.API.Migrations
 {
     [DbContext(typeof(CabinetContext))]
-    [Migration("20210323135000_OriginalsDescription")]
-    partial class OriginalsDescription
+    [Migration("20210425184545_RemovedFolder")]
+    partial class RemovedFolder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,9 @@ namespace Cabinet.API.Migrations
                     b.Property<int>("DocumentTypeID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrganizationID")
                         .HasColumnType("int");
 
@@ -43,6 +46,19 @@ namespace Cabinet.API.Migrations
                     b.ToTable("Document");
                 });
 
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.Property<Guid>("DocumentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrganizationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentID", "OrganizationID");
+
+                    b.ToTable("DocumentsAccesses");
+                });
+
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
                 {
                     b.Property<int>("ID")
@@ -51,6 +67,9 @@ namespace Cabinet.API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UniqueName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -79,8 +98,8 @@ namespace Cabinet.API.Migrations
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("StoragePath")
                         .HasColumnType("nvarchar(max)");
@@ -95,7 +114,7 @@ namespace Cabinet.API.Migrations
 
                     b.HasIndex("DocumentID");
 
-                    b.ToTable("Original");
+                    b.ToTable("OriginalDescription");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
@@ -107,6 +126,17 @@ namespace Cabinet.API.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Cabinet.API.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -122,6 +152,8 @@ namespace Cabinet.API.Migrations
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
                 {
+                    b.Navigation("DocumentAccesses");
+
                     b.Navigation("Originals");
                 });
 

@@ -1,5 +1,6 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,24 @@ namespace Cabinet.API.Infrastructure.Extensions
 	{
 		public static IQueryable<Document> Filter(this IQueryable<Document> d, DocumentsFilter filter)
 		{
-			if (filter.OrganizationID is { } orgId)
+			if (filter.OrganizationOwnerID is { } orgOwnerId)
 			{
-				d.Where(x => x.OrganizationID == orgId);
+				d = d.Where(x => x.OrganizationID == orgOwnerId);
 			}
 
-			if (filter.DocTypeID is not null && filter.DocTypeID.Any())
+			if (filter.DocTypeID is { } && filter.DocTypeID.Any())
 			{
-				d.Where(x => filter.DocTypeID.Contains(x.DocumentTypeID));
+				d = d.Where(x => filter.DocTypeID.Contains(x.DocumentTypeID));
 			}
 
+			if (filter.OrganizationReceiverID is { } orgReceiverId)
+			{
+				d = d.Include(d => d.DocumentAccesses)
+					.Where(d => d.DocumentAccesses.Any(d => d.OrganizationID == orgReceiverId));
+			}
+
+			d = d.Include(d => d.DocumentType)
+				.Include(d => d.Originals);
 			return d;
 		}
 	}

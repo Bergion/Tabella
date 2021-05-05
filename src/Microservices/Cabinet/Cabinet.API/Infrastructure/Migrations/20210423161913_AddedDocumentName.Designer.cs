@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cabinet.API.Migrations
 {
     [DbContext(typeof(CabinetContext))]
-    [Migration("20210323135505_UniqueDocTypeName")]
-    partial class UniqueDocTypeName
+    [Migration("20210423161913_AddedDocumentName")]
+    partial class AddedDocumentName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,9 @@ namespace Cabinet.API.Migrations
                     b.Property<int>("DocumentTypeID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrganizationID")
                         .HasColumnType("int");
 
@@ -41,6 +44,21 @@ namespace Cabinet.API.Migrations
                     b.HasIndex("DocumentTypeID");
 
                     b.ToTable("Document");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.Property<Guid>("DocumentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FolderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocumentID", "FolderID");
+
+                    b.HasIndex("FolderID");
+
+                    b.ToTable("DocumentsAccesses");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
@@ -59,6 +77,30 @@ namespace Cabinet.API.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.Folder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrganizationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -82,8 +124,8 @@ namespace Cabinet.API.Migrations
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("StoragePath")
                         .HasColumnType("nvarchar(max)");
@@ -98,7 +140,7 @@ namespace Cabinet.API.Migrations
 
                     b.HasIndex("DocumentID");
 
-                    b.ToTable("Original");
+                    b.ToTable("OriginalDescription");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
@@ -110,6 +152,25 @@ namespace Cabinet.API.Migrations
                         .IsRequired();
 
                     b.Navigation("DocumentType");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Cabinet.API.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cabinet.API.Models.Folder", "Folder")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("FolderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("Folder");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.OriginalDescription", b =>
@@ -125,12 +186,19 @@ namespace Cabinet.API.Migrations
 
             modelBuilder.Entity("Cabinet.API.Models.Document", b =>
                 {
+                    b.Navigation("DocumentAccesses");
+
                     b.Navigation("Originals");
                 });
 
             modelBuilder.Entity("Cabinet.API.Models.DocumentType", b =>
                 {
                     b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("Cabinet.API.Models.Folder", b =>
+                {
+                    b.Navigation("DocumentAccesses");
                 });
 #pragma warning restore 612, 618
         }

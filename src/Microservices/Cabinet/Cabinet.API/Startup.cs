@@ -42,6 +42,16 @@ namespace Cabinet.API
 			services.AddTransient<DocumentManager>();
 			services.AddTransient<IDocumentService, DocumentService>();
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder =>
+					builder
+					.SetIsOriginAllowed((host) => true)
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials());
+			});
 			services.AddGrpc(options => options.EnableDetailedErrors = true);
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
@@ -61,9 +71,12 @@ namespace Cabinet.API
 			}
 			app.UseHttpsRedirection();
 
+			app.UseStaticFiles();
+
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseCors("CorsPolicy");
 
 			app.UseEndpoints(endpoints =>
 			{

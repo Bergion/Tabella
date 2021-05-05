@@ -24,20 +24,25 @@ namespace Cabinet.API.Controllers
 			_documentService = documentService;
 		}
 
-		// Get api/documents?pageSize=50&pageIndex=0
+		// Get cabinet-api/v1/documents?pageSize=50&pageIndex=0
 		[HttpGet]
 		[ProducesResponseType((int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		public async Task<ActionResult<PaginatedItemsViewModel<Document>>> GetDocumentsAsync([FromQuery] DocumentsFilter filter,
 			int pageSize = 50, int pageIndex = 0)
 		{
+			if (!filter.IsValid)
+			{
+				return BadRequest();
+			}
+
 			var documents = await _documentService.GetDocumentsPaginatedAsync(filter, pageSize, pageIndex);
 			return Ok(documents);
 		}
 
-		// POST api/documents
+		// POST cabinet-api/v1/documents
 		[HttpPost]
-		[ProducesResponseType((int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.Created)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		public async Task<IActionResult> CreateDocumentsAsync([FromForm] AggregatedDocumentInputModel documentsInputModel)
 		{
@@ -62,7 +67,7 @@ namespace Cabinet.API.Controllers
 				return BadRequest("Unable to create document");
 			}
 
-			return Ok(result);
+			return Created(nameof(CreateDocumentsAsync), result);
 		}
 	}
 }

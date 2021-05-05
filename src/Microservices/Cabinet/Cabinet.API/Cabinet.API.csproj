@@ -9,7 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\DocumentManager.cs" />
+    <Content Remove="wwwroot\Seed\Document (1).docx" />
+    <Content Remove="wwwroot\Seed\Document (1).pdf" />
+    <Content Remove="wwwroot\Seed\Document (2).docx" />
+    <Content Remove="wwwroot\Seed\Document (2).pdf" />
+    <Content Remove="wwwroot\Seed\Document (3).docx" />
+    <Content Remove="wwwroot\Seed\Document (3).pdf" />
+    <Content Remove="wwwroot\Seed\Document (4).docx" />
+    <Content Remove="wwwroot\Seed\Document (4).pdf" />
+    <Content Remove="wwwroot\Seed\Document (5).pdf" />
+    <Content Remove="wwwroot\Seed\Document (6).pdf" />
+    <Content Remove="wwwroot\Seed\Document (7).pdf" />
+    <Content Remove="wwwroot\Seed\Document (8).pdf" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.36.0" />
@@ -27,6 +38,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
@@ -36,7 +48,21 @@
 
   <ItemGroup>
     <Folder Include="Grpc\" />
-    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Seed\Document (1).docx" />
+    <None Include="wwwroot\Seed\Document (1).pdf" />
+    <None Include="wwwroot\Seed\Document (2).docx" />
+    <None Include="wwwroot\Seed\Document (2).pdf" />
+    <None Include="wwwroot\Seed\Document (3).docx" />
+    <None Include="wwwroot\Seed\Document (3).pdf" />
+    <None Include="wwwroot\Seed\Document (4).docx" />
+    <None Include="wwwroot\Seed\Document (4).pdf" />
+    <None Include="wwwroot\Seed\Document (5).pdf" />
+    <None Include="wwwroot\Seed\Document (6).pdf" />
+    <None Include="wwwroot\Seed\Document (7).pdf" />
+    <None Include="wwwroot\Seed\Document (8).pdf" />
   </ItemGroup>
   
   <ItemGroup>
