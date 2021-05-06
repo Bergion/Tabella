@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Cabinet.API.Services.Abstractions
+﻿
+namespace Common.Types.Abstractions
 {
 	public interface IResult
 	{

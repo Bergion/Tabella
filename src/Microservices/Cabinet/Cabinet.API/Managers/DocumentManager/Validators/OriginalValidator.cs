@@ -1,4 +1,5 @@
 ﻿using Cabinet.API.Services.Abstractions;
+using Common.Types.Abstractions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;

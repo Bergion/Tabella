@@ -12,6 +12,8 @@ using Cabinet.API.Infrastructure.Extensions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using Common.Types.Abstractions;
+using Common.Types;
 
 namespace Cabinet.API.Services
 {

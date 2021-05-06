@@ -11,6 +11,8 @@ using Cabinet.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Common.Types.Abstractions;
+using Common.Types;
 
 namespace Cabinet.UnitTests
 {

@@ -3,6 +3,7 @@ using Cabinet.API.Models;
 using Cabinet.API.Services.Abstractions;
 using Cabinet.API.ViewModels;
 using Cabinet.Storage.Abstractions;
+using Common.Types.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

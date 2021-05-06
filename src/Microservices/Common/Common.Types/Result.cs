@@ -1,10 +1,6 @@
-﻿using Cabinet.API.Services.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Common.Types.Abstractions;
 
-namespace Cabinet.API.Services
+namespace Common.Types
 {
 	public class Result : IResult
 	{

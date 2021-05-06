@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Routing.API.Infrastructure;
+using Routing.API.Services;
+using Routing.API.Services.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +30,20 @@ namespace Routing.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<RoutingContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection")));
+			services.AddTransient<IRouteService, RouteService>();
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder =>
+					builder
+					.SetIsOriginAllowed((host) => true)
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials());
+			});
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -49,6 +66,7 @@ namespace Routing.API
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseCors("CorsPolicy");
 
 			app.UseEndpoints(endpoints =>
 			{

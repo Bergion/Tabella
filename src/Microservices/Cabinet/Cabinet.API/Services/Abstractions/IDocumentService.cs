@@ -1,6 +1,7 @@
 ﻿using Cabinet.API.InputModels;
 using Cabinet.API.Models;
 using Cabinet.API.ViewModels;
+using Common.Types.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
