@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,9 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 using Routing.API.Infrastructure;
+using Routing.API.Infrastructure.Extensions;
 using Routing.API.Services;
 using Routing.API.Services.Abstractions;
+using Shared.EventBus;
+using Shared.EventBus.Abstractions;
+using Shared.EventBus.RabbitMQ;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +39,8 @@ namespace Routing.API
 			services.AddDbContext<RoutingContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection")));
 			services.AddTransient<IRouteService, RouteService>();
+			services.AddIntegrationServices(Configuration)
+				.AddEventBus(Configuration);
 
 			services.AddCors(options =>
 			{
@@ -72,6 +80,15 @@ namespace Routing.API
 			{
 				endpoints.MapControllers();
 			});
+
+			ConfigureEventBus(app);
+		}
+
+		protected virtual void ConfigureEventBus(IApplicationBuilder app)
+		{
+			var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+			//eventBus.Subscribe<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
+			//eventBus.Subscribe<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 		}
 	}
 }
